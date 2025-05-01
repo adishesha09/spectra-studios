@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://spectrastudios.co.za/sitemap.xml
+Sitemap: https://adishesha09.github.io/spectra-studios/sitemap.xml
