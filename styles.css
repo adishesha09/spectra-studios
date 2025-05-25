@@ -166,7 +166,6 @@ header {
   background: radial-gradient(circle, #030321 0%, #000 100%);
   padding: 0 20px;
   position: relative;
-
   padding-top: 100px;
 }
 
@@ -357,33 +356,23 @@ header {
   border-bottom: 1px solid rgba(0, 247, 255, 0.3);
 }
 
-/* About Section Bio Content */
-.bio {
-  margin-bottom: 20px;
+/* Bio Section Improvements */
+.bio-block {
   text-align: justify;
-  /* Remove hyphens and word-break properties */
   hyphens: none;
-  word-break: normal;
 }
 
+.bio {
+  margin-bottom: 20px;
+  hyphens: none;
+  word-break: normal;
+  text-align: justify;
+  line-height: 1.6;
+}
 
 .no-break {
   white-space: nowrap;
-  display: inline-block; /* Ensures phrases stay together */
-}
-
-
-@media (max-width: 768px) {
-  .bio {
-    text-align: left; /* Change from justify for better mobile readability */
-    hyphens: none;
-    word-break: normal;
-  }
-  
-  .no-break {
-    white-space: normal; /* Allow wrapping on small screens */
-    display: inline; /* Revert to normal inline behavior */
-  }
+  display: inline-block;
 }
 
 /* Portfolio Section */
@@ -788,6 +777,22 @@ footer {
     flex-direction: column;
     align-items: center;
   }
+  
+  /* Mobile Bio Text Improvements */
+  .bio-block {
+    text-align: left;
+  }
+  
+  .bio {
+    text-align: left;
+    hyphens: none;
+    word-break: normal;
+  }
+  
+  .no-break {
+    white-space: normal;
+    display: inline;
+  }
 }
 
 @media (max-width: 480px) {
@@ -873,63 +878,33 @@ footer {
 }
 
 .logo-neon {
-  /* Original logo remains unchanged */
-  width: 150px; /* Adjust as needed */
+  width: 150px;
   height: auto;
   position: relative;
   z-index: 2;
-}
-
-/* Glow effect */
-.logo-neon::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: url('spectra_studios_transparent.png') center/contain no-repeat;
-  filter: 
-    drop-shadow(0 0 5px #b56bff)
-    drop-shadow(0 0 10px #6a00ff)
-    drop-shadow(0 0 20px #00d4ff);
-  z-index: 1;
-  opacity: 0.8;
-  animation: neon-pulse 3s infinite alternate;
-}
-
-.logo-neon {
-  width: 150px; /* Adjust to your logo size */
-  height: auto;
   filter:
-      drop-shadow(0 0 5px rgba(0, 247, 255, 0.7))  /* Primary color inner glow */
-      drop-shadow(0 0 15px rgba(0, 247, 255, 0.5)) /* Primary color medium glow */
-      drop-shadow(0 0 25px rgba(204, 143, 255, 0.3)); /* Secondary color outer glow */
+    drop-shadow(0 0 5px rgba(0, 247, 255, 0.7))
+    drop-shadow(0 0 15px rgba(0, 247, 255, 0.5))
+    drop-shadow(0 0 25px rgba(204, 143, 255, 0.3));
   animation: neon-pulse 3s infinite alternate;
 }
 
 @keyframes neon-pulse {
   0% {
-      filter:
-          drop-shadow(0 0 5px rgba(0, 247, 255, 0.7))
-          drop-shadow(0 0 15px rgba(0, 247, 255, 0.5))
-          drop-shadow(0 0 25px rgba(204, 143, 255, 0.3));
+    filter:
+      drop-shadow(0 0 5px rgba(0, 247, 255, 0.7))
+      drop-shadow(0 0 15px rgba(0, 247, 255, 0.5))
+      drop-shadow(0 0 25px rgba(204, 143, 255, 0.3));
   }
   100% {
-      filter:
-          drop-shadow(0 0 10px rgba(0, 247, 255, 0.9))
-          drop-shadow(0 0 20px rgba(0, 247, 255, 0.7))
-          drop-shadow(0 0 30px rgba(204, 143, 255, 0.5));
+    filter:
+      drop-shadow(0 0 10px rgba(0, 247, 255, 0.9))
+      drop-shadow(0 0 20px rgba(0, 247, 255, 0.7))
+      drop-shadow(0 0 30px rgba(204, 143, 255, 0.5));
   }
 }
 
-/* Prevent line breaks in .no-break paragraphs on any device */
-.no-break {
-  white-space: nowrap;
-  overflow-wrap: normal;
-  word-break: keep-all;
-}
-
+/* Cookie Banner */
 .cookie-banner {
   position: fixed;
   bottom: 0;
