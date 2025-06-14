@@ -16,8 +16,13 @@
   --bg-gradient: linear-gradient(135deg, var(--dark), var(--darker));
 }
 
-html {
-  scroll-behavior: smooth;
+* {
+  max-width: 100vw;
+}
+
+html, body {
+  width: 100%;
+  overflow-x: hidden;
 }
 
 body {
@@ -341,9 +346,10 @@ header {
 }
 
 .bio-content {
-  flex: 2;
-  min-width: 300px;
-  max-width: 700px;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 20px;
   text-align: left;
 }
 
@@ -363,11 +369,11 @@ header {
 }
 
 .bio {
-  margin-bottom: 20px;
-  hyphens: none;
-  word-break: normal;
+  margin-bottom: 1.5em;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text);
   text-align: justify;
-  line-height: 1.6;
 }
 
 .no-break {
@@ -908,11 +914,13 @@ footer {
 .cookie-banner {
   position: fixed;
   bottom: 0;
+  left: 0;
   width: 100%;
+  max-width: 100vw;
+  box-sizing: border-box;
   background: rgba(3, 3, 33, 0.95);
   color: var(--text);
   padding: 20px;
-  text-align: center;
   z-index: 9999;
   box-shadow: 0 -5px 15px rgba(0, 247, 255, 0.2);
   display: flex;
@@ -920,6 +928,7 @@ footer {
   align-items: center;
   flex-wrap: wrap;
   gap: 15px;
+  overflow-x: hidden;
 }
 
 .cookie-banner p {
@@ -944,4 +953,11 @@ footer {
 .cookie-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 0 20px var(--primary);
+}
+
+@media (max-width: 480px) {
+  .cookie-banner {
+    padding: 15px;
+    font-size: 0.95rem;
+  }
 }
