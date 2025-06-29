@@ -89,9 +89,7 @@ If you’re interested in collaborating, hiring, or viewing more of my work, rea
 
 ---
 
-## License
-
-This project is licensed under the [MIT License](LICENSE).  
+## License 
 Feel free to fork and remix with credit!
 
 ---
