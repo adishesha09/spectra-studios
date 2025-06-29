@@ -37,22 +37,6 @@ This repository contains the full source code for the live site [spectrastudios.
 
 ---
 
-## Folder Structure
-
-```
-spectra-studios/
-├── assets/               # Images, logos, and media
-├── css/                  # Main stylesheet(s)
-├── js/                   # Custom scripts
-├── index.html            # Homepage
-├── about.html            # Studio overview
-├── portfolio.html        # Project gallery
-├── contact.html          # Contact form page
-└── README.md             # You're here!
-```
-
----
-
 ## Live Website
 
 Check out the live version here:  
