@@ -7,7 +7,7 @@
 
 ## Overview
 
-Spectra Studios is a multidisciplinary creative studio founded by Adishesha Sai Nandkoomar, focused on delivering polished, engaging, and playful digital experiences. This website serves as the official online presence for the studio, showcasing portfolio projects, client work, and service offerings across game and web development.
+Spectra Studios is a multidisciplinary creative studio founded by Adishesha Sai Nandkoomar, focused on delivering polished, engaging, and playful digital experiences. This website serves as the official online presence for the studio, showcasing student portfolio projects, client work, and service offerings across game and web development.
 
 This repository contains the full source code for the live site [spectrastudios.co.za](https://spectrastudios.co.za), built with performance, accessibility, and modern responsive design in mind.
 
