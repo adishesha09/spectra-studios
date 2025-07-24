@@ -198,7 +198,7 @@
           </p>
           <p class="bio">
             Outside of game development, I am an avid film fanatic with a deep appreciation for the magic of
-            cinema—particularly films produced by The Walt Disney Company, the Marvel Cinematic Universe, and the Star
+            cinema, particularly films produced by The Walt Disney Company, the Marvel Cinematic Universe, and the Star
             Wars franchise. My favourite Disney titles include <span class="no-break">Toy Story</span>, the original
             <span class="no-break">Lilo & Stitch (2002)</span>, <span class="no-break">The Lion King</span>, and <span
               class="no-break">Peter Pan</span>. I'm also a passionate fan of the <span class="no-break">Iron Man</span>
@@ -408,13 +408,16 @@
     // Scroll to top button
     window.addEventListener('scroll', function () {
       const scrollTopBtn = document.querySelector('.scroll-top');
-      if (window.pageYOffset > 300) {
-        scrollTopBtn.classList.add('show');
-      } else {
-        scrollTopBtn.classList.remove('show');
+      if (scrollTopBtn) {
+        if (window.pageYOffset > 300) {
+          scrollTopBtn.classList.add('show');
+        } else {
+          scrollTopBtn.classList.remove('show');
+        }
       }
     });
 
+    // Cookie Functions
     function setCookie(name, value, days) {
       const expires = new Date(Date.now() + days * 864e5).toUTCString();
       document.cookie = name + '=' + encodeURIComponent(value) + '; expires=' + expires + '; path=/';
@@ -430,12 +433,29 @@
     function acceptCookies() {
       setCookie('cookiesAccepted', 'yes', 365);
       document.getElementById('cookie-banner').style.display = 'none';
+      loadAnalytics(); // Load Google Analytics after consent
     }
 
-    // Hide banner if cookie is already set
+    function loadAnalytics() {
+      const script = document.createElement('script');
+      script.src = "https://www.googletagmanager.com/gtag/js?id=G-J0S6KCTHEX";
+      script.async = true;
+      document.head.appendChild(script);
+
+      script.onload = function () {
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        window.gtag = gtag;
+        gtag('js', new Date());
+        gtag('config', 'G-J0S6KCTHEX');
+      };
+    }
+
+    // On Page Load
     window.addEventListener('DOMContentLoaded', () => {
       if (getCookie('cookiesAccepted')) {
         document.getElementById('cookie-banner').style.display = 'none';
+        loadAnalytics();
       }
     });
   </script>
