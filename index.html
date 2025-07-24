@@ -49,6 +49,14 @@
 }
 </script>
 
+  <!-- Google tag for verification (safe to preload) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-J0S6KCTHEX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+  </script>
+
+  <link rel="preload" as="image" href="founder_upscaled.jpeg" />
   <link rel="stylesheet" href="styles.css" />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
@@ -155,7 +163,7 @@
 
     <div class="container about-content">
       <div class="founder-card" data-aos="zoom-in">
-        <img src="founder_upscaled.jpeg" alt="Adishesha Nandkoomar" class="founder-img" loading="lazy" />
+        <img src="founder_upscaled.jpeg" alt="Adishesha Nandkoomar" class="founder-img" />
         <div class="founder-info">
           <h3>Adishesha Nandkoomar</h3>
           <p class="title">Game Design Student & Founder</p>
@@ -438,18 +446,8 @@
     }
 
     function loadAnalytics() {
-      const script = document.createElement('script');
-      script.src = "https://www.googletagmanager.com/gtag/js?id=G-J0S6KCTHEX";
-      script.async = true;
-      document.head.appendChild(script);
-
-      script.onload = function () {
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        window.gtag = gtag;
-        gtag('js', new Date());
-        gtag('config', 'G-J0S6KCTHEX');
-      };
+      gtag('js', new Date());
+      gtag('config', 'G-J0S6KCTHEX');
     }
 
     // On Page Load
