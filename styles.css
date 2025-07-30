@@ -26,7 +26,10 @@ body {
   overflow-x: hidden;
 }
 
-/* Loading Screen */
+/* ===================== */
+/* LOADING SCREEN STYLES */
+/* ===================== */
+
 .loading-screen {
   position: fixed;
   top: 0;
@@ -48,6 +51,16 @@ body {
   pointer-events: none;
 }
 
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+  max-width: 300px;
+  padding: 20px;
+  text-align: center;
+}
+
 .loading-logo {
   width: 150px;
   height: auto;
@@ -55,6 +68,8 @@ body {
   animation:
     neon-pulse 2s infinite alternate,
     float 3s ease-in-out infinite;
+  filter:
+    drop-shadow(0 0 5px rgba(0, 247, 255, 0.7)) drop-shadow(0 0 15px rgba(0, 247, 255, 0.5)) drop-shadow(0 0 25px rgba(204, 143, 255, 0.3));
 }
 
 .loading-text {
@@ -82,27 +97,6 @@ body {
   box-shadow: 0 0 10px var(--primary);
 }
 
-.loading-screen~#cookie-banner {
-  display: none !important;
-}
-
-/* Restore cookie banner visibility after loading */
-.loading-screen.hidden~#cookie-banner {
-  display: flex !important;
-}
-
-@keyframes float {
-
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
 .loading-dots {
   display: inline-flex;
   gap: 5px;
@@ -116,6 +110,7 @@ body {
   border-radius: 50%;
   opacity: 0;
   animation: dot-pulse 1.5s infinite ease-in-out;
+  box-shadow: 0 0 5px var(--primary);
 }
 
 .loading-dot:nth-child(1) {
@@ -130,6 +125,19 @@ body {
   animation-delay: 0.4s;
 }
 
+/* Animations */
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
 @keyframes dot-pulse {
 
   0%,
@@ -141,6 +149,121 @@ body {
   50% {
     opacity: 1;
     transform: scale(1.1);
+  }
+}
+
+/* Ensure cookie banner is hidden during loading */
+.loading-screen~#cookie-banner {
+  display: none !important;
+}
+
+.loading-screen.hidden~#cookie-banner {
+  display: flex !important;
+}
+
+/* ==================== */
+/* MOBILE OPTIMIZATIONS */
+/* ==================== */
+
+@media (max-width: 992px) {
+  .loading-content {
+    max-width: 280px;
+  }
+}
+
+@media (max-width: 768px) {
+  .loading-content {
+    width: 85%;
+    padding: 15px;
+  }
+
+  .loading-logo {
+    width: 100px;
+    margin-bottom: 20px;
+  }
+
+  .loading-text {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+  }
+
+  .loading-bar-container {
+    width: 150px;
+    height: 4px;
+  }
+
+  .loading-dots {
+    margin-top: 15px;
+  }
+
+  .loading-dot {
+    width: 8px;
+    height: 8px;
+  }
+
+  @keyframes float {
+
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-7px);
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .loading-content {
+    width: 80%;
+    padding: 10px;
+  }
+
+  .loading-logo {
+    width: 80px;
+    margin-bottom: 15px;
+  }
+
+  .loading-text {
+    font-size: 1rem;
+    margin-bottom: 15px;
+    padding: 0 20px;
+  }
+
+  .loading-bar-container {
+    width: 120px;
+  }
+
+  .loading-dots {
+    margin-top: 12px;
+  }
+
+  @keyframes float {
+
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+}
+
+/* Small mobile devices (e.g. iPhone SE) */
+@media (max-width: 375px) {
+  .loading-logo {
+    width: 70px;
+  }
+
+  .loading-text {
+    font-size: 0.9rem;
+  }
+
+  .loading-bar-container {
+    width: 100px;
   }
 }
 
