@@ -56,183 +56,46 @@ body {
   flex-direction: column;
   align-items: center;
   width: 90%;
-  max-width: 300px;
-  padding: 20px;
+  max-width: 380px;
+  /* Slightly larger container */
+  padding: 30px;
   text-align: center;
 }
 
 .loading-logo {
-  width: 150px;
-  height: auto;
-  margin-bottom: 30px;
-  animation:
-    neon-pulse 2s infinite alternate,
-    float 3s ease-in-out infinite;
-  filter:
-    drop-shadow(0 0 5px rgba(0, 247, 255, 0.7)) drop-shadow(0 0 15px rgba(0, 247, 255, 0.5)) drop-shadow(0 0 25px rgba(204, 143, 255, 0.3));
-}
-
-.loading-text {
-  color: var(--primary);
-  font-size: 1.5rem;
-  margin-bottom: 30px;
-  text-align: center;
-  animation: glow 2s ease-in-out infinite alternate;
-}
-
-.loading-bar-container {
   width: 200px;
-  height: 5px;
-  background: rgba(0, 247, 255, 0.2);
-  border-radius: 5px;
-  overflow: hidden;
-}
-
-.loading-bar {
-  height: 100%;
-  width: 0;
-  background: var(--primary);
-  border-radius: 5px;
-  transition: width 0.3s ease;
-  box-shadow: 0 0 10px var(--primary);
-}
-
-.loading-dots {
-  display: inline-flex;
-  gap: 5px;
-  margin-top: 20px;
-}
-
-.loading-dot {
-  width: 10px;
-  height: 10px;
-  background: var(--primary);
-  border-radius: 50%;
-  opacity: 0;
-  animation: dot-pulse 1.5s infinite ease-in-out;
-  box-shadow: 0 0 5px var(--primary);
-}
-
-.loading-dot:nth-child(1) {
-  animation-delay: 0s;
-}
-
-.loading-dot:nth-child(2) {
-  animation-delay: 0.2s;
-}
-
-.loading-dot:nth-child(3) {
-  animation-delay: 0.4s;
-}
-
-/* Animations */
-@keyframes float {
-
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-@keyframes dot-pulse {
-
-  0%,
-  100% {
-    opacity: 0.3;
-    transform: scale(0.8);
-  }
-
-  50% {
-    opacity: 1;
-    transform: scale(1.1);
-  }
-}
-
-/* Ensure cookie banner is hidden during loading */
-.loading-screen~#cookie-banner {
-  display: none !important;
-}
-
-.loading-screen.hidden~#cookie-banner {
-  display: flex !important;
-}
-
-/* ==================== */
-/* MOBILE OPTIMIZATIONS */
-/* ==================== */
-
-/* ===================== */
-/* LOADING SCREEN STYLES */
-/* ===================== */
-
-.loading-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: var(--bg-gradient);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  opacity: 1;
-  transition: opacity 0.5s ease-out;
-}
-
-.loading-screen.hidden {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.loading-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 90%;
-  max-width: 350px;
-  /* Increased from 300px */
-  padding: 25px;
-  /* Increased from 20px */
-  text-align: center;
-}
-
-.loading-logo {
-  width: 180px;
-  /* Increased from 150px */
+  /* More prominent logo */
   height: auto;
-  margin-bottom: 35px;
-  /* Increased from 30px */
+  margin-bottom: 40px;
+  /* Increased spacing */
   animation:
     neon-pulse 2s infinite alternate,
     float 3s ease-in-out infinite;
   filter:
-    drop-shadow(0 0 5px rgba(0, 247, 255, 0.7)) drop-shadow(0 0 15px rgba(0, 247, 255, 0.5)) drop-shadow(0 0 25px rgba(204, 143, 255, 0.3));
+    drop-shadow(0 0 8px rgba(0, 247, 255, 0.8))
+    /* Stronger glow */
+    drop-shadow(0 0 20px rgba(0, 247, 255, 0.6)) drop-shadow(0 0 30px rgba(204, 143, 255, 0.4));
 }
 
 .loading-text {
   color: var(--primary);
-  font-size: 1.7rem;
-  /* Increased from 1.5rem */
-  margin-bottom: 35px;
-  /* Increased from 30px */
+  font-size: 1.8rem;
+  /* Larger text */
+  margin-bottom: 40px;
   text-align: center;
   animation: glow 2s ease-in-out infinite alternate;
+  text-shadow: 0 0 10px var(--primary);
+  /* Added glow to text */
 }
 
 .loading-bar-container {
-  width: 240px;
-  /* Increased from 200px */
-  height: 6px;
-  /* Increased from 5px */
-  background: rgba(0, 247, 255, 0.2);
-  border-radius: 6px;
-  /* Increased from 5px */
+  width: 260px;
+  /* Wider bar */
+  height: 7px;
+  /* Thicker bar */
+  background: rgba(0, 247, 255, 0.3);
+  /* More visible track */
+  border-radius: 7px;
   overflow: hidden;
 }
 
@@ -240,32 +103,33 @@ body {
   height: 100%;
   width: 0;
   background: var(--primary);
-  border-radius: 6px;
-  /* Increased from 5px */
+  border-radius: 7px;
   transition: width 0.3s ease;
-  box-shadow: 0 0 10px var(--primary);
+  box-shadow: 0 0 15px var(--primary);
+  /* Stronger glow */
 }
 
 .loading-dots {
   display: inline-flex;
-  gap: 8px;
-  /* Increased from 5px */
-  margin-top: 25px;
-  /* Increased from 20px */
+  gap: 10px;
+  /* More spacing between dots */
+  margin-top: 30px;
+  /* Increased spacing */
 }
 
 .loading-dot {
-  width: 12px;
-  /* Increased from 10px */
-  height: 12px;
-  /* Increased from 10px */
+  width: 14px;
+  /* Larger dots */
+  height: 14px;
   background: var(--primary);
   border-radius: 50%;
   opacity: 0;
   animation: dot-pulse 1.5s infinite ease-in-out;
-  box-shadow: 0 0 5px var(--primary);
+  box-shadow: 0 0 8px var(--primary);
+  /* Stronger glow */
 }
 
+/* Animation delays */
 .loading-dot:nth-child(1) {
   animation-delay: 0s;
 }
@@ -287,26 +151,26 @@ body {
   }
 
   50% {
-    transform: translateY(-12px);
+    transform: translateY(-15px);
   }
 
-  /* Increased from -10px */
+  /* More pronounced float */
 }
 
 @keyframes dot-pulse {
 
   0%,
   100% {
-    opacity: 0.3;
-    transform: scale(0.8);
+    opacity: 0.4;
+    transform: scale(0.9);
   }
 
   50% {
     opacity: 1;
-    transform: scale(1.2);
+    transform: scale(1.3);
   }
 
-  /* Increased from 1.1 */
+  /* More dramatic pulse */
 }
 
 /* ==================== */
@@ -315,49 +179,43 @@ body {
 
 @media (max-width: 992px) {
   .loading-content {
-    max-width: 320px;
-    /* Increased from 280px */
+    max-width: 340px;
+    padding: 25px;
   }
 }
 
 @media (max-width: 768px) {
   .loading-content {
-    width: 85%;
-    padding: 20px;
-    /* Increased from 15px */
+    width: 90%;
+    /* More screen coverage */
+    padding: 25px;
   }
 
   .loading-logo {
-    width: 130px;
-    /* Increased from 100px */
-    margin-bottom: 25px;
-    /* Increased from 20px */
+    width: 160px;
+    /* Larger mobile logo */
+    margin-bottom: 35px;
   }
 
   .loading-text {
-    font-size: 1.4rem;
-    /* Increased from 1.2rem */
-    margin-bottom: 25px;
-    /* Increased from 20px */
+    font-size: 1.6rem;
+    /* Bigger text */
+    margin-bottom: 35px;
   }
 
   .loading-bar-container {
-    width: 180px;
-    /* Increased from 150px */
-    height: 5px;
-    /* Increased from 4px */
+    width: 220px;
+    /* Wider bar */
+    height: 6px;
   }
 
   .loading-dots {
-    margin-top: 20px;
-    /* Increased from 15px */
+    margin-top: 25px;
   }
 
   .loading-dot {
-    width: 10px;
-    /* Increased from 8px */
-    height: 10px;
-    /* Increased from 8px */
+    width: 12px;
+    height: 12px;
   }
 
   @keyframes float {
@@ -368,43 +226,37 @@ body {
     }
 
     50% {
-      transform: translateY(-8px);
+      transform: translateY(-12px);
     }
-
-    /* Increased from -7px */
   }
 }
 
 @media (max-width: 480px) {
   .loading-content {
-    width: 80%;
-    padding: 15px;
-    /* Increased from 10px */
+    width: 85%;
+    padding: 20px;
   }
 
   .loading-logo {
-    width: 100px;
-    /* Increased from 80px */
-    margin-bottom: 20px;
-    /* Increased from 15px */
+    width: 140px;
+    /* Larger logo */
+    margin-bottom: 30px;
   }
 
   .loading-text {
-    font-size: 1.2rem;
-    /* Increased from 1rem */
-    margin-bottom: 20px;
-    /* Increased from 15px */
-    padding: 0 20px;
+    font-size: 1.4rem;
+    /* Bigger text */
+    margin-bottom: 30px;
+    padding: 0 25px;
   }
 
   .loading-bar-container {
-    width: 150px;
-    /* Increased from 120px */
+    width: 200px;
+    /* Wider bar */
   }
 
   .loading-dots {
-    margin-top: 18px;
-    /* Increased from 12px */
+    margin-top: 25px;
   }
 
   @keyframes float {
@@ -415,28 +267,26 @@ body {
     }
 
     50% {
-      transform: translateY(-6px);
+      transform: translateY(-10px);
     }
-
-    /* Increased from -5px */
   }
 }
 
-/* Small mobile devices (e.g. iPhone SE) */
+/* Smallest mobile devices */
 @media (max-width: 375px) {
   .loading-logo {
-    width: 90px;
-    /* Increased from 70px */
+    width: 120px;
+    /* Still larger than before */
   }
 
   .loading-text {
-    font-size: 1.1rem;
-    /* Increased from 0.9rem */
+    font-size: 1.3rem;
+    /* Readable text */
   }
 
   .loading-bar-container {
-    width: 130px;
-    /* Increased from 100px */
+    width: 180px;
+    /* Good visibility */
   }
 }
 
