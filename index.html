@@ -468,6 +468,10 @@
     window.addEventListener('DOMContentLoaded', () => {
       const loadingScreen = document.getElementById('loadingScreen');
       const loadingBar = document.getElementById('loadingBar');
+      const cookieBanner = document.getElementById('cookie-banner');
+
+      // Hide cookie banner initially (redundant with CSS but ensures it)
+      cookieBanner.style.display = 'none';
 
       // Simulate loading progress
       let progress = 0;
@@ -480,6 +484,11 @@
           clearInterval(interval);
           setTimeout(() => {
             loadingScreen.classList.add('hidden');
+
+            // Show cookie banner only after loading completes
+            if (!getCookie('cookiesAccepted')) {
+              cookieBanner.style.display = 'flex';
+            }
 
             // Load other things after loading screen is hidden
             if (getCookie('cookiesAccepted')) {
