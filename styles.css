@@ -82,6 +82,15 @@ body {
   box-shadow: 0 0 10px var(--primary);
 }
 
+.loading-screen~#cookie-banner {
+  display: none !important;
+}
+
+/* Restore cookie banner visibility after loading */
+.loading-screen.hidden~#cookie-banner {
+  display: flex !important;
+}
+
 @keyframes float {
 
   0%,
