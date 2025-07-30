@@ -8,7 +8,7 @@
   <meta name="description"
     content="Professional Game & Web Development by Spectra Studios. A student portfolio by Adishesha Nandkoomar.">
   <meta name="keywords"
-    content="adishesha nandkoomar, game development, game design, software development, game design documents, website creation, Unity, GameMaker">
+    content="game development, game design, software development, game design documents, website creation, Unity, GameMaker">
   <meta name="author" content="Adishesha Nandkoomar">
   <link rel="canonical" href="https://spectrastudios.co.za/" />
   <meta name="robots" content="index, follow">
@@ -61,10 +61,23 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
   <script src="https://kit.fontawesome.com/50723fee09.js" crossorigin="anonymous"></script>
-  <link rel="icon" href="spectra_studios.png" type="image/png">
+  <link rel="icon" href="spectra_studios_transparent.png" type="image/png">
 </head>
 
 <body>
+  <!-- Loading Screen -->
+  <div class="loading-screen" id="loadingScreen">
+    <img src="spectra_studios_transparent.png" alt="Spectra Studios Logo" class="loading-logo">
+    <div class="loading-text">EMPOWERING IMAGINATION</div>
+    <div class="loading-bar-container">
+      <div class="loading-bar" id="loadingBar"></div>
+    </div>
+    <div class="loading-dots">
+      <div class="loading-dot"></div>
+      <div class="loading-dot"></div>
+      <div class="loading-dot"></div>
+    </div>
+  </div>
   <!-- Navigation -->
   <header>
     <nav>
@@ -208,9 +221,9 @@
           </p>
           <p class="bio">
             Outside of game development, I am an avid film fanatic with a deep appreciation for the magic of
-            cinema, particularly films produced by The Walt Disney Company, the Marvel Cinematic Universe, the Star
-            Wars franchise, and the James Bond franchise. My favourite Disney titles include <span class="no-break">Toy Story</span>, the original
-            <span class="no-break">Lilo & Stitch (2002)</span>, <span class="no-break">The Lion King</span> and <span
+            cinema, particularly films produced by The Walt Disney Company, the Marvel Cinematic Universe, and the Star
+            Wars franchise. My favourite Disney titles include <span class="no-break">Toy Story</span>, the original
+            <span class="no-break">Lilo & Stitch (2002)</span>, <span class="no-break">The Lion King</span>, and <span
               class="no-break">Peter Pan</span>. I'm also a passionate fan of the <span class="no-break">Iron Man</span>
             trilogy, with <span class="no-break">Iron Man 2</span> standing out as my personal favourite.
           </p>
@@ -254,7 +267,7 @@
       <div class="portfolio-item" data-aos="fade-up" data-aos-delay="100">
         <div class="portfolio-card">
           <i class="fas fa-laptop-code portfolio-icon"></i>
-          <h3>Web Development Projects</h3>
+          <h3>Web Design Projects</h3>
           <a href="https://drkdhariparsad.co.za/" target="_blank" class="portfolio-link">
             drkdhariparsad.co.za <i class="fas fa-external-link-alt"></i>
           </a>
@@ -320,7 +333,7 @@
           <select name="project" required>
             <option value="" disabled selected>Project Type</option>
             <option value="game-design">Game Development</option>
-            <option value="website">Web Development</option>
+            <option value="website">Website Design</option>
           </select>
           <i class="fas fa-project-diagram"></i>
         </div>
@@ -451,13 +464,35 @@
       gtag('config', 'G-J0S6KCTHEX');
     }
 
-    // On Page Load
+    // Loading Screen Functionality
     window.addEventListener('DOMContentLoaded', () => {
-      if (getCookie('cookiesAccepted')) {
-        document.getElementById('cookie-banner').style.display = 'none';
-        loadAnalytics();
-      }
+      const loadingScreen = document.getElementById('loadingScreen');
+      const loadingBar = document.getElementById('loadingBar');
+
+      // Simulate loading progress
+      let progress = 0;
+      const interval = setInterval(() => {
+        progress += Math.random() * 10;
+        if (progress > 100) progress = 100;
+        loadingBar.style.width = `${progress}%`;
+
+        if (progress === 100) {
+          clearInterval(interval);
+          setTimeout(() => {
+            loadingScreen.classList.add('hidden');
+
+            // Load other things after loading screen is hidden
+            if (getCookie('cookiesAccepted')) {
+              loadAnalytics();
+            }
+          }, 500);
+        }
+      }, 200);
     });
+
+    // Google Analytics (keep this at the bottom)
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
   </script>
 </body>
 
