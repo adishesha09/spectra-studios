@@ -73,6 +73,14 @@ header {
   transition: height 0.3s ease;
 }
 
+.logo-link>div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 1;
+  /* Remove any default line spacing */
+}
+
 .logo-text {
   font-family: 'Bebas Neue', sans-serif;
   font-weight: 575;
@@ -80,7 +88,10 @@ header {
   font-size: 1.3rem;
   letter-spacing: 1px;
   /* Slight spacing between letters */
+  line-height: 1;
   text-transform: uppercase;
+  margin: 0;
+  padding: 0;
 }
 
 .logo-slogan {
@@ -92,6 +103,8 @@ header {
   margin-top: 0px;
   letter-spacing: 0.5px;
   /* Slight spacing between letters */
+  margin: 0;
+  padding: 0;
 }
 
 .nav-links {
