@@ -66,8 +66,9 @@ header {
 }
 
 .logo-img {
-  height: 40px;
+  height: 50px;
   width: auto;
+  transition: height 0.3s ease;
 }
 
 .logo-text {
@@ -635,6 +636,7 @@ header {
   flex: 2;
   min-width: 300px;
   max-width: 600px;
+
 }
 
 .form-group {
@@ -720,7 +722,7 @@ footer {
 }
 
 .footer-logo img {
-  height: 40px;
+  height: 50px;
   margin-bottom: 10px;
 }
 
@@ -871,14 +873,16 @@ textarea.valid {
 
   .hero {
     padding-top: 120px;
-    align-items: center; /* Center content horizontally */
-    text-align: center; /* Center text */
+    align-items: center;
+    /* Center content horizontally */
+    text-align: center;
+    /* Center text */
   }
 
   .hero-content {
     display: flex;
     flex-direction: column;
-    align-items: center; 
+    align-items: center;
   }
 
   .skills-category,
@@ -1084,4 +1088,15 @@ textarea:focus {
 
 .skip-link:focus {
   top: 0;
+}
+
+@media (min-width: 769px) {
+  header {
+    padding: 10px 0; 
+  }
+}
+
+.logo-link:hover .logo-img,
+.footer-logo:hover img {
+  transform: scale(1.05); 
 }
