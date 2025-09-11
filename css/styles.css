@@ -563,7 +563,7 @@ header {
 
 /* Contact Section - Updated for better mobile/tablet centering */
 .contact {
-  background-color: var(--off-white);
+  background-color: var(--white);
 }
 
 .contact-container {
