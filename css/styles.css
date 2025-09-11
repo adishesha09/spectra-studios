@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400&display=swap');
+
 :root {
   --sky-blue: #A8D9FF;
   --deep-black: #000000;
@@ -72,15 +74,24 @@ header {
 }
 
 .logo-text {
-  font-weight: 600;
+  font-family: 'Bebas Neue', sans-serif;
+  font-weight: 575;
   color: var(--deep-black);
   font-size: 1.3rem;
+  letter-spacing: 1px;
+  /* Slight spacing between letters */
+  text-transform: uppercase;
 }
 
 .logo-slogan {
+  font-family: 'Montserrat', sans-serif;
+  /* Similar to News Gothic */
+  font-weight: 400;
   font-size: 0.8rem;
   color: var(--steel-gray);
-  margin-top: 2px;
+  margin-top: 0px;
+  letter-spacing: 0.5px;
+  /* Slight spacing between letters */
 }
 
 .nav-links {
