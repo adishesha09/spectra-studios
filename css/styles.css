@@ -1100,8 +1100,3 @@ textarea:focus {
     padding: 10px 0;
   }
 }
-
-.logo-link:hover .logo-img,
-.footer-logo:hover img {
-  transform: scale(1.05);
-}
