@@ -871,6 +871,14 @@ textarea.valid {
 
   .hero {
     padding-top: 120px;
+    align-items: center; /* Center content horizontally */
+    text-align: center; /* Center text */
+  }
+
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
   }
 
   .skills-category,
