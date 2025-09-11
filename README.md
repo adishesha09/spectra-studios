@@ -1,13 +1,13 @@
 # Spectra Studios 
 
 **Website Repository for [spectrastudios.co.za](https://spectrastudios.co.za)**  
-*Creative Development Studio | Game and Web Development | Portfolio Showcase*
+*Creative Development Studio | Game Development | Portfolio Showcase*
 
 ---
 
 ## Overview
 
-Spectra Studios is a multidisciplinary creative studio founded by Adishesha Sai Nandkoomar, focused on delivering polished, engaging, and playful digital experiences. This website serves as the official online presence for the studio, showcasing student portfolio projects, client work, and service offerings across game and web development.
+Spectra Studios is a multidisciplinary creative studio founded by Adishesha Sai Nandkoomar, focused on delivering polished, engaging, and playful digital experiences. This website serves as the official online presence for the studio, showcasing portfolio projects, client work, and service offerings across game development.
 
 This repository contains the full source code for the live site [spectrastudios.co.za](https://spectrastudios.co.za), built with performance, accessibility, and modern responsive design in mind.
 
@@ -17,7 +17,6 @@ This repository contains the full source code for the live site [spectrastudios.
 
 - **Fully Responsive** design for desktop, tablet, and mobile
 - **Game Development Projects** with images, links, and project descriptions
-- **Web Development Portfolio** including client work
 - Modern UI with strong visual identity
 - Optimised for SEO and fast load times
 - Contact form with spam protection
@@ -32,7 +31,7 @@ This repository contains the full source code for the live site [spectrastudios.
 | **HTML5**          | Markup for all pages               |
 | **CSS3**   | Styling with responsive utilities  |
 | **JavaScript** | Interactive features & animation |
-| **Formspree Forms**  | Serverless form handling           |
+| **Formsubmit Forms**  | Serverless form handling           |
 | **Favicon & Meta** | Custom icons, OG tags, and SEO     |
 
 ---
