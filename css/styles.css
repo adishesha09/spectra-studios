@@ -697,12 +697,13 @@ footer {
   background-color: var(--muted-navy);
   color: var(--white);
   padding: 60px 0 30px;
+  text-align: center;
 }
 
 .footer-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
   gap: 40px;
   max-width: 1200px;
   margin: 0 auto;
@@ -712,6 +713,7 @@ footer {
 .footer-col {
   flex: 1;
   min-width: 200px;
+  align-items: center;
 }
 
 .footer-logo {
@@ -736,13 +738,16 @@ footer {
   margin-bottom: 20px;
   position: relative;
   padding-bottom: 10px;
+  width: 100%;
+  text-align: center;
 }
 
 .footer-col h4::after {
   content: '';
   position: absolute;
   bottom: 0;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
   width: 50px;
   height: 2px;
   background: var(--sky-blue);
@@ -1092,11 +1097,11 @@ textarea:focus {
 
 @media (min-width: 769px) {
   header {
-    padding: 10px 0; 
+    padding: 10px 0;
   }
 }
 
 .logo-link:hover .logo-img,
 .footer-logo:hover img {
-  transform: scale(1.05); 
+  transform: scale(1.05);
 }
