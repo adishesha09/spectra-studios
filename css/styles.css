@@ -324,10 +324,19 @@ header {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 15px;
+  justify-content: center;
+  /* Center content vertically */
+  padding: 20px 15px;
+  /* Adjust padding for better spacing */
   border-radius: 10px;
   background: var(--off-white);
   transition: all 0.3s ease;
+  text-align: center;
+  /* Center text */
+  min-height: 100px;
+  /* Set minimum height for consistency */
+  width: 100%;
+  /* Ensure full width within grid cell */
 }
 
 .skill-item:hover {
@@ -352,6 +361,8 @@ header {
   color: var(--deep-black);
   text-align: center;
   font-weight: 500;
+  margin: 0;
+  /* Remove default margins */
 }
 
 /* About Section */
