@@ -15,13 +15,13 @@
   <meta property="og:title" content="Spectra Studios | Game Development Portfolio">
   <meta property="og:description"
     content="Game Development Portfolio by Adishesha Nandkoomar. Specialising in Unity development, game design, and interactive experiences.">
-  <meta property="og:image" content="https://spectrastudios.co.za/spectra_studios.png">
+  <meta property="og:image" content="https://spectrastudios.co.za/imgs/spectra_studios.png">
   <meta property="og:url" content="https://spectrastudios.co.za/">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Spectra Studios | Game Development Portfolio">
   <meta name="twitter:description"
     content="Game Development Portfolio by Adishesha Nandkoomar. Specialising in Unity development, game design, and interactive experiences.">
-  <meta name="twitter:image" content="https://spectrastudios.co.za/spectra_studios.png">
+  <meta name="twitter:image" content="https://spectrastudios.co.za/imgs/spectra_studios.png">
   <meta name="google-site-verification" content="Tu0uJdET99Te-4pgvqTBllO8KMQAbnQsIIwz4JKSXRE" />
 
   <script type="application/ld+json">
@@ -56,88 +56,6 @@
   <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
   <script src="https://kit.fontawesome.com/50723fee09.js" crossorigin="anonymous"></script>
   <link rel="icon" href="imgs/logo_joystick.png" type="image/png">
-  <style>
-    /* Custom CSS for hamburger menu and animations */
-    .hamburger-menu {
-      display: none;
-      flex-direction: column;
-      cursor: pointer;
-      z-index: 1001;
-    }
-
-    .hamburger-menu span {
-      width: 25px;
-      height: 3px;
-      background: #fff;
-      margin: 3px 0;
-      transition: 0.3s;
-      border-radius: 2px;
-    }
-
-    .hamburger-menu.active span:nth-child(1) {
-      transform: rotate(45deg) translate(5px, 5px);
-    }
-
-    .hamburger-menu.active span:nth-child(2) {
-      opacity: 0;
-    }
-
-    .hamburger-menu.active span:nth-child(3) {
-      transform: rotate(-45deg) translate(7px, -6px);
-    }
-
-    .mobile-nav-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.95);
-      z-index: 999;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s ease;
-    }
-
-    .mobile-nav-overlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .mobile-nav-links {
-      list-style: none;
-      text-align: center;
-    }
-
-    .mobile-nav-links li {
-      margin: 25px 0;
-    }
-
-    .mobile-nav-links a {
-      color: #fff;
-      font-size: 1.8rem;
-      font-weight: 500;
-      text-decoration: none;
-      transition: color 0.3s ease;
-    }
-
-    .mobile-nav-links a:hover {
-      color: #6c63ff;
-    }
-
-    @media (max-width: 768px) {
-      .hamburger-menu {
-        display: flex;
-      }
-
-      .nav-links {
-        display: none;
-      }
-    }
-  </style>
   <link rel="stylesheet" href="css/styles.css?v=2" />
 </head>
 
@@ -338,7 +256,8 @@
           </div>
           <div class="bio-block">
             <h3>My Inspirations</h3>
-            <p class="bio">I'm deeply passionate about narrative design, drawing inspiration from my favourite films like
+            <p class="bio">I'm deeply passionate about narrative design, drawing inspiration from my favourite films
+              like
               <span class="highlight">Toy Story 2</span> and <span class="highlight">Lilo & Stitch</span>, as well as
               the entire <span class="highlight">James Bond series</span> (having watched all 25 films). These stories
               have shaped my understanding of character development, emotional resonance, and the power of a compelling
@@ -470,25 +389,88 @@
       offset: 100
     });
 
-    // Mobile navigation toggle
     const hamburger = document.querySelector('.hamburger-menu');
     const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
     const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
     const navLinks = document.querySelectorAll('.nav-link, .footer-nav-link');
 
+    // Toggle mobile navigation
     hamburger.addEventListener('click', () => {
+      const isActive = hamburger.classList.contains('active');
+
       hamburger.classList.toggle('active');
       mobileNavOverlay.classList.toggle('active');
-      document.body.style.overflow = mobileNavOverlay.classList.contains('active') ? 'hidden' : '';
+      document.body.classList.toggle('no-scroll', !isActive);
     });
 
     // Close mobile nav when clicking on a link
     mobileNavLinks.forEach(link => {
-      link.addEventListener('click', () => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        // Close menu first
         hamburger.classList.remove('active');
         mobileNavOverlay.classList.remove('active');
-        document.body.style.overflow = '';
+        document.body.classList.remove('no-scroll');
+
+        // Then handle smooth scroll
+        const targetId = link.getAttribute('href');
+        smoothScrollToTarget(targetId);
       });
+    });
+
+    // Enhanced smooth scroll function for all navigation links
+    function smoothScrollToTarget(targetId) {
+      const targetSection = document.querySelector(targetId);
+
+      if (targetSection) {
+        // Calculate the position to scroll to
+        const targetPosition = targetSection.offsetTop - 80; // Offset for header
+
+        // Smooth scroll with animation
+        window.scrollTo({
+          top: targetPosition,
+          behavior: 'smooth'
+        });
+
+        // Refresh AOS after scroll to ensure animations trigger properly
+        setTimeout(() => {
+          AOS.refresh();
+
+          // Force AOS to check and trigger animations for the target section
+          const targetElements = targetSection.querySelectorAll('[data-aos]');
+          targetElements.forEach(element => {
+            element.classList.add('aos-animate');
+          });
+        }, 600);
+      }
+    }
+
+    // Apply smooth scroll to all navigation links
+    navLinks.forEach(link => {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        smoothScrollToTarget(targetId);
+      });
+    });
+
+    // Close menu when clicking outside navigation links
+    mobileNavOverlay.addEventListener('click', (e) => {
+      if (e.target === mobileNavOverlay) {
+        hamburger.classList.remove('active');
+        mobileNavOverlay.classList.remove('active');
+        document.body.classList.remove('no-scroll');
+      }
+    });
+
+    // Close menu on escape key press
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && mobileNavOverlay.classList.contains('active')) {
+        hamburger.classList.remove('active');
+        mobileNavOverlay.classList.remove('active');
+        document.body.classList.remove('no-scroll');
+      }
     });
 
     // Smooth scroll with slide animation for navigation links
