@@ -85,7 +85,6 @@ p {
 a {
   color: var(--highlight);
   text-decoration: none;
-  border-bottom: 1px dotted var(--highlight);
   transition: all 0.2s ease;
 }
 
