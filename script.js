@@ -90,6 +90,9 @@ document.addEventListener('DOMContentLoaded', function () {
         thankYouPage.style.display = 'none';
         desktop.style.display = 'block';
     });
+
+    // Initialize mobile window controls
+    addMobileWindowControls();
 });
 
 // Update clock in taskbar
@@ -145,17 +148,33 @@ document.addEventListener('DOMContentLoaded', function () {
                     left: window.style.left
                 };
 
-                window.style.width = '95%';
-                window.style.height = '85%';
-                window.style.top = '2.5%';
-                window.style.left = '2.5%';
+                // Use viewport units for mobile compatibility
+                window.style.width = '95vw';
+                window.style.height = '85vh';
+                window.style.top = '2.5vh';
+                window.style.left = '2.5vw';
                 isMaximized = true;
+
+                // Add maximized class for mobile styling
+                window.classList.add('maximized');
+
+                // Force reflow and ensure buttons are clickable
+                setTimeout(() => {
+                    window.style.zIndex = '25'; // Higher z-index when maximized
+                    // Re-initialize mobile controls after maximize
+                    addMobileWindowControls();
+                }, 10);
             } else {
                 window.style.width = originalSize.width;
                 window.style.height = originalSize.height;
                 window.style.top = originalSize.top;
                 window.style.left = originalSize.left;
                 isMaximized = false;
+                window.style.zIndex = '20'; // Restore normal z-index
+                window.classList.remove('maximized');
+
+                // Re-initialize mobile controls after restore
+                setTimeout(addMobileWindowControls, 10);
             }
         });
 
@@ -215,21 +234,19 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Make thank you page draggable and resizable
-    document.addEventListener('DOMContentLoaded', function () {
-        const thankYouWindow = document.querySelector('#thank-you-page .window');
-        const thankYouHeader = thankYouWindow.querySelector('.window-header');
+    const thankYouWindow = document.querySelector('#thank-you-page .window');
+    const thankYouHeader = thankYouWindow.querySelector('.window-header');
 
-        // Make draggable
-        makeDraggable(thankYouWindow, thankYouHeader);
+    // Make draggable
+    makeDraggable(thankYouWindow, thankYouHeader);
 
-        // Make resizable
-        makeResizable(thankYouWindow);
-    });
+    // Make resizable
+    makeResizable(thankYouWindow);
 
     // Resume download
-    document.getElementById('download-resume').addEventListener('click', function () {
-        alert('Resume download would start here');
-        // In a real implementation, this would link to the actual PDF
+    document.querySelector('.download-button').addEventListener('click', function (e) {
+        // Let the natural download happen via the anchor tag
+        console.log('Resume download initiated');
     });
 });
 
@@ -243,6 +260,35 @@ function openWindow(windowId) {
         w.style.zIndex = '10';
     });
     window.style.zIndex = '20';
+
+    // Ensure mobile controls are initialized
+    setTimeout(addMobileWindowControls, 10);
+}
+
+// Add mobile-specific touch event handlers for window controls
+function addMobileWindowControls() {
+    document.querySelectorAll('.window-control').forEach(control => {
+        // Remove any existing touch listeners to avoid duplicates
+        control.removeEventListener('touchstart', handleTouchControl);
+        control.addEventListener('touchstart', handleTouchControl, { passive: false });
+    });
+}
+
+function handleTouchControl(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const control = e.currentTarget;
+    const window = control.closest('.window');
+
+    if (control.classList.contains('minimize-btn')) {
+        window.style.display = 'none';
+    } else if (control.classList.contains('close-btn')) {
+        window.style.display = 'none';
+    } else if (control.classList.contains('maximize-btn')) {
+        // Let the existing click handler handle this
+        control.click();
+    }
 }
 
 // Make element draggable
@@ -256,7 +302,7 @@ function makeDraggable(element, handle) {
     function dragMouseDown(e) {
         e.preventDefault();
         startDrag(e.clientX, e.clientY);
-        
+
         document.addEventListener('mousemove', elementDrag);
         document.addEventListener('mouseup', closeDragElement);
     }
@@ -265,7 +311,7 @@ function makeDraggable(element, handle) {
         e.preventDefault();
         const touch = e.touches[0];
         startDrag(touch.clientX, touch.clientY);
-        
+
         document.addEventListener('touchmove', elementTouchDrag, { passive: false });
         document.addEventListener('touchend', closeDragElement);
     }
