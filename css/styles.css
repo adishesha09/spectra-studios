@@ -667,8 +667,8 @@ button:active {
 /* Responsive design */
 @media (max-width: 768px) {
   .window {
-    min-width: 250px;
-    min-height: 150px;
+    min-width: 280px !important;
+    min-height: 200px !important;
   }
 
   .folder {
@@ -686,51 +686,55 @@ button:active {
 
   .portrait-container {
     align-self: center;
+    margin-bottom: 15px;
   }
 
   #start-menu {
     width: 180px;
+    bottom: 35px;
+  }
+
+  .window-control {
+    width: 25px;
+    height: 25px;
+    line-height: 21px;
+  }
+
+  .start-menu-item {
+    padding: 12px 10px;
+  }
+
+  button,
+  .taskbar-item {
+    min-height: 32px;
+    padding: 8px 12px;
+  }
+
+  body {
+    touch-action: manipulation;
   }
 }
 
-.download-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-family: var(--font-ui);
-  font-size: 0.85rem;
-  color: #000;
-  background-color: var(--button-bg);
-  border: 2px outset var(--button-border);
-  border-top: 2px solid #fff;
-  border-left: 2px solid #fff;
-  padding: 6px 10px;
-  margin-top: 6px;
-  text-decoration: none;
-  cursor: pointer;
-  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
-  transition: all 0.15s ease;
+.window-header {
+  user-select: none;
+  -webkit-user-select: none;
 }
 
-.download-button i {
-  font-size: 0.9rem;
-  color: var(--highlight);
-}
+@media (max-width: 480px) {
+  .window-content {
+    padding: 10px;
+  }
 
-.download-button:hover {
-  background-color: var(--highlight);
-  color: #fff;
-  border: 2px inset var(--button-border);
-  transform: translateY(1px);
-}
+  .about-container {
+    gap: 10px;
+  }
 
-.download-button:hover i {
-  color: #fff;
-}
+  .portrait-container {
+    flex: 0 0 140px;
+  }
 
-.download-button:active {
-  border: 2px inset var(--button-border);
-  background-color: #4d5cc4;
-  box-shadow: inset 1px 1px 0 #000;
-  transform: translateY(2px);
+  .portrait {
+    width: 120px;
+    height: 180px;
+  }
 }

@@ -249,31 +249,56 @@ function openWindow(windowId) {
 function makeDraggable(element, handle) {
     let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
 
-    handle.onmousedown = dragMouseDown;
+    // Add both mouse and touch events
+    handle.addEventListener('mousedown', dragMouseDown);
+    handle.addEventListener('touchstart', dragTouchDown, { passive: false });
 
     function dragMouseDown(e) {
         e.preventDefault();
+        startDrag(e.clientX, e.clientY);
+        
+        document.addEventListener('mousemove', elementDrag);
+        document.addEventListener('mouseup', closeDragElement);
+    }
+
+    function dragTouchDown(e) {
+        e.preventDefault();
+        const touch = e.touches[0];
+        startDrag(touch.clientX, touch.clientY);
+        
+        document.addEventListener('touchmove', elementTouchDrag, { passive: false });
+        document.addEventListener('touchend', closeDragElement);
+    }
+
+    function startDrag(clientX, clientY) {
         // Get initial cursor position
-        pos3 = e.clientX;
-        pos4 = e.clientY;
+        pos3 = clientX;
+        pos4 = clientY;
 
         // Bring to front
         document.querySelectorAll('.window').forEach(w => {
             w.style.zIndex = '10';
         });
         element.style.zIndex = '20';
-
-        document.onmouseup = closeDragElement;
-        document.onmousemove = elementDrag;
     }
 
     function elementDrag(e) {
         e.preventDefault();
+        updatePosition(e.clientX, e.clientY);
+    }
+
+    function elementTouchDrag(e) {
+        e.preventDefault();
+        const touch = e.touches[0];
+        updatePosition(touch.clientX, touch.clientY);
+    }
+
+    function updatePosition(clientX, clientY) {
         // Calculate new position
-        pos1 = pos3 - e.clientX;
-        pos2 = pos4 - e.clientY;
-        pos3 = e.clientX;
-        pos4 = e.clientY;
+        pos1 = pos3 - clientX;
+        pos2 = pos4 - clientY;
+        pos3 = clientX;
+        pos4 = clientY;
 
         // Set new position
         element.style.top = (element.offsetTop - pos2) + "px";
@@ -281,8 +306,10 @@ function makeDraggable(element, handle) {
     }
 
     function closeDragElement() {
-        document.onmouseup = null;
-        document.onmousemove = null;
+        document.removeEventListener('mousemove', elementDrag);
+        document.removeEventListener('mouseup', closeDragElement);
+        document.removeEventListener('touchmove', elementTouchDrag);
+        document.removeEventListener('touchend', closeDragElement);
     }
 }
 
@@ -292,55 +319,77 @@ function makeResizable(element) {
 
     handles.forEach(handle => {
         handle.addEventListener('mousedown', initResize);
+        handle.addEventListener('touchstart', initTouchResize, { passive: false });
     });
 
     function initResize(e) {
         e.preventDefault();
+        startResize(e.clientX, e.clientY, e.target);
+    }
 
-        const direction = e.target.className.split(' ')[1].split('-')[1];
-        const startX = e.clientX;
-        const startY = e.clientY;
+    function initTouchResize(e) {
+        e.preventDefault();
+        const touch = e.touches[0];
+        startResize(touch.clientX, touch.clientY, e.target);
+    }
+
+    function startResize(startX, startY, handle) {
+        const direction = handle.className.split(' ')[1].split('-')[1];
         const startWidth = parseInt(document.defaultView.getComputedStyle(element).width, 10);
         const startHeight = parseInt(document.defaultView.getComputedStyle(element).height, 10);
         const startLeft = element.offsetLeft;
         const startTop = element.offsetTop;
 
-        document.onmousemove = doResize;
-        document.onmouseup = stopResize;
+        document.addEventListener('mousemove', doResize);
+        document.addEventListener('mouseup', stopResize);
+        document.addEventListener('touchmove', doTouchResize, { passive: false });
+        document.addEventListener('touchend', stopResize);
 
         function doResize(e) {
+            resizeElement(e.clientX, e.clientY);
+        }
+
+        function doTouchResize(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            resizeElement(touch.clientX, touch.clientY);
+        }
+
+        function resizeElement(clientX, clientY) {
             if (direction === 'e') {
-                element.style.width = (startWidth + e.clientX - startX) + 'px';
+                element.style.width = (startWidth + clientX - startX) + 'px';
             } else if (direction === 'w') {
-                element.style.width = (startWidth - e.clientX + startX) + 'px';
-                element.style.left = (startLeft + e.clientX - startX) + 'px';
+                element.style.width = (startWidth - clientX + startX) + 'px';
+                element.style.left = (startLeft + clientX - startX) + 'px';
             } else if (direction === 's') {
-                element.style.height = (startHeight + e.clientY - startY) + 'px';
+                element.style.height = (startHeight + clientY - startY) + 'px';
             } else if (direction === 'n') {
-                element.style.height = (startHeight - e.clientY + startY) + 'px';
-                element.style.top = (startTop + e.clientY - startY) + 'px';
+                element.style.height = (startHeight - clientY + startY) + 'px';
+                element.style.top = (startTop + clientY - startY) + 'px';
             } else if (direction === 'se') {
-                element.style.width = (startWidth + e.clientX - startX) + 'px';
-                element.style.height = (startHeight + e.clientY - startY) + 'px';
+                element.style.width = (startWidth + clientX - startX) + 'px';
+                element.style.height = (startHeight + clientY - startY) + 'px';
             } else if (direction === 'sw') {
-                element.style.width = (startWidth - e.clientX + startX) + 'px';
-                element.style.height = (startHeight + e.clientY - startY) + 'px';
-                element.style.left = (startLeft + e.clientX - startX) + 'px';
+                element.style.width = (startWidth - clientX + startX) + 'px';
+                element.style.height = (startHeight + clientY - startY) + 'px';
+                element.style.left = (startLeft + clientX - startX) + 'px';
             } else if (direction === 'ne') {
-                element.style.width = (startWidth + e.clientX - startX) + 'px';
-                element.style.height = (startHeight - e.clientY + startY) + 'px';
-                element.style.top = (startTop + e.clientY - startY) + 'px';
+                element.style.width = (startWidth + clientX - startX) + 'px';
+                element.style.height = (startHeight - clientY + startY) + 'px';
+                element.style.top = (startTop + clientY - startY) + 'px';
             } else if (direction === 'nw') {
-                element.style.width = (startWidth - e.clientX + startX) + 'px';
-                element.style.height = (startHeight - e.clientY + startY) + 'px';
-                element.style.left = (startLeft + e.clientX - startX) + 'px';
-                element.style.top = (startTop + e.clientY - startY) + 'px';
+                element.style.width = (startWidth - clientX + startX) + 'px';
+                element.style.height = (startHeight - clientY + startY) + 'px';
+                element.style.left = (startLeft + clientX - startX) + 'px';
+                element.style.top = (startTop + clientY - startY) + 'px';
             }
         }
 
         function stopResize() {
-            document.onmousemove = null;
-            document.onmouseup = null;
+            document.removeEventListener('mousemove', doResize);
+            document.removeEventListener('mouseup', stopResize);
+            document.removeEventListener('touchmove', doTouchResize);
+            document.removeEventListener('touchend', stopResize);
         }
     }
 }
