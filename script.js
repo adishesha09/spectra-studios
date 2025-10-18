@@ -77,14 +77,14 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    document.getElementById('return-to-desktop').addEventListener('click', function() {
+    document.getElementById('return-to-desktop').addEventListener('click', function () {
         thankYouPage.style.display = 'none';
         desktop.style.display = 'block';
         cleanupPikachu();
         setTimeout(initPikachuFollower, 200);
     });
 
-    document.getElementById('thank-you-close').addEventListener('click', function() {
+    document.getElementById('thank-you-close').addEventListener('click', function () {
         thankYouPage.style.display = 'none';
         desktop.style.display = 'block';
         cleanupPikachu();
@@ -93,13 +93,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const folders = document.querySelectorAll('.folder');
     folders.forEach(folder => {
-        folder.addEventListener('click', function(e) {
+        folder.addEventListener('click', function (e) {
             folders.forEach(f => f.classList.remove('selected'));
             this.classList.add('selected');
         });
     });
 
-    document.getElementById('desktop').addEventListener('click', function(e) {
+    document.getElementById('desktop').addEventListener('click', function (e) {
         if (e.target.id === 'desktop' || e.target.classList.contains('crt-scanlines')) {
             folders.forEach(folder => folder.classList.remove('selected'));
         }
@@ -406,12 +406,12 @@ function initPikachuFollower() {
         bringPikachuToFront();
         return;
     }
-    
+
     if (window.pikachuAnimationId) {
         cancelAnimationFrame(window.pikachuAnimationId);
         window.pikachuAnimationId = null;
     }
-    
+
     const pikachu = document.getElementById('pikachu');
     let mouseX = 0;
     let mouseY = 0;
@@ -420,20 +420,20 @@ function initPikachuFollower() {
     let velocityX = 0;
     let velocityY = 0;
     let isFollowing = false;
-    
+
     function bringPikachuToFront() {
         if (pikachu) {
             pikachu.style.zIndex = '1999';
         }
     }
-    
+
     function resetPikachu() {
         pikachuX = Math.random() * (window.innerWidth - 64);
         pikachuY = Math.random() * (window.innerHeight - 64);
         velocityX = 0;
         velocityY = 0;
         isFollowing = false;
-        
+
         if (pikachu) {
             pikachu.style.left = `${pikachuX}px`;
             pikachu.style.top = `${pikachuY}px`;
@@ -441,92 +441,92 @@ function initPikachuFollower() {
             bringPikachuToFront();
         }
     }
-    
+
     function handleMouseMove(e) {
         mouseX = e.clientX;
         mouseY = e.clientY;
-        
+
         if (!isFollowing) {
             isFollowing = true;
         }
     }
-    
+
     function animatePikachu() {
         if (isFollowing && pikachu && pikachu.style.display !== 'none') {
             const dx = mouseX - pikachuX;
             const dy = mouseY - pikachuY;
             const distance = Math.sqrt(dx * dx + dy * dy);
-            
+
             if (distance > 60) {
                 const acceleration = 0.1;
                 const forceX = (dx / distance) * acceleration;
                 const forceY = (dy / distance) * acceleration;
-                
+
                 velocityX += forceX;
                 velocityY += forceY;
-                
+
                 velocityX *= 0.95;
                 velocityY *= 0.95;
-                
+
                 const speed = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
                 const maxSpeed = 5;
                 if (speed > maxSpeed) {
                     velocityX = (velocityX / speed) * maxSpeed;
                     velocityY = (velocityY / speed) * maxSpeed;
                 }
-                
+
                 pikachuX += velocityX;
                 pikachuY += velocityY;
-                
+
                 pikachuX = Math.max(0, Math.min(window.innerWidth - 64, pikachuX));
                 pikachuY = Math.max(0, Math.min(window.innerHeight - 64, pikachuY));
-                
+
                 pikachu.style.left = `${pikachuX}px`;
                 pikachu.style.top = `${pikachuY}px`;
-                
+
                 if (velocityX > 0.1) {
                     pikachu.style.transform = 'scaleX(1)';
                 } else if (velocityX < -0.1) {
                     pikachu.style.transform = 'scaleX(-1)';
                 }
-                
+
                 const bob = Math.sin(Date.now() / 100) * 3;
                 pikachu.style.transform += ` translateY(${bob}px)`;
-                
+
                 bringPikachuToFront();
             } else {
                 velocityX *= 0.8;
                 velocityY *= 0.8;
             }
         }
-        
+
         window.pikachuAnimationId = requestAnimationFrame(animatePikachu);
     }
-    
+
     document.addEventListener('mousemove', handleMouseMove);
-    
+
     document.addEventListener('mouseleave', () => {
         if (pikachu) {
             pikachu.style.display = 'none';
         }
     });
-    
+
     document.addEventListener('mouseenter', () => {
         if (isFollowing && pikachu) {
             pikachu.style.display = 'block';
             bringPikachuToFront();
         }
     });
-    
+
     document.addEventListener('click', bringPikachuToFront);
     document.addEventListener('mousedown', bringPikachuToFront);
-    
+
     const taskbar = document.getElementById('taskbar');
     const startBtn = document.getElementById('start-btn');
-    
+
     if (taskbar) taskbar.addEventListener('click', bringPikachuToFront);
     if (startBtn) startBtn.addEventListener('click', bringPikachuToFront);
-    
+
     resetPikachu();
     window.pikachuAnimationId = requestAnimationFrame(animatePikachu);
     window.pikachuInitialized = true;
@@ -539,10 +539,10 @@ function showPikachu() {
             cancelAnimationFrame(window.pikachuAnimationId);
             window.pikachuAnimationId = null;
         }
-        
+
         const newPikachu = pikachu.cloneNode(true);
         pikachu.parentNode.replaceChild(newPikachu, pikachu);
-        
+
         setTimeout(() => {
             initPikachuFollower();
         }, 100);
@@ -555,7 +555,7 @@ function cleanupPikachu() {
         window.pikachuAnimationId = null;
     }
     window.pikachuInitialized = false;
-    
+
     const pikachu = document.getElementById('pikachu');
     if (pikachu) {
         pikachu.style.display = 'none';
