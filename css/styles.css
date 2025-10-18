@@ -30,6 +30,120 @@ body {
   width: 100vw;
 }
 
+/* === GLOBAL TEXT SETTINGS === */
+body {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: var(--text-color);
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: grayscale;
+  image-rendering: pixelated;
+  letter-spacing: 0.2px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-title);
+  color: var(--highlight);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+h1 {
+  font-size: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+h2 {
+  font-size: 1.25rem;
+  margin-top: 0.75rem;
+}
+
+h3 {
+  font-size: 1.05rem;
+  margin-top: 0.5rem;
+}
+
+h4,
+h5,
+h6 {
+  font-size: 0.95rem;
+}
+
+p {
+  margin-bottom: 10px;
+  font-family: var(--font-body);
+  color: #000;
+}
+
+a {
+  color: var(--highlight);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--highlight);
+  transition: all 0.2s ease;
+}
+
+a:hover {
+  color: #fff;
+  background-color: var(--highlight);
+  border-bottom: 1px solid #fff;
+}
+
+.about-section ul {
+  margin: 8px 0 8px 25px;
+  list-style-type: square;
+}
+
+.about-section li {
+  margin-bottom: 6px;
+  padding: 3px 6px;
+  border: 1px solid var(--button-border);
+  border-top: 1px solid #fff;
+  border-left: 1px solid #fff;
+  background-color: var(--window-bg);
+  border-radius: 2px;
+  transition: background-color 0.15s ease;
+}
+
+.about-section li:hover {
+  background-color: var(--highlight);
+  color: #fff;
+  cursor: default;
+}
+
+button,
+.start-menu-item,
+.taskbar-item,
+.folder-label {
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  letter-spacing: 0.2px;
+  color: #000;
+}
+
+.window-header,
+.window-title {
+  font-family: var(--font-title);
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: white;
+}
+
+.caption,
+.portrait-caption,
+small {
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  color: #555;
+}
+
 /* Boot Screen */
 #boot-screen {
   position: fixed;

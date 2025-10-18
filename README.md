@@ -1,84 +1,44 @@
-# Spectra Studios 
+## Version 2.0 — The SpectraOS Era
 
-**Website Repository for [spectrastudios.co.za](https://spectrastudios.co.za)**  
-*Creative Development Studio | Game Development | Portfolio Showcase*
+> "From modern minimalism to retro maximalism."
+> Welcome to the new era of Spectra Studios, where creativity meets nostalgia.
 
----
+### Overview
 
-## Overview
+Spectra Studios has evolved from a conventional portfolio website into an interactive retro desktop experience inspired by the PC-98 and Windows 98 aesthetic.
+The redesign transforms the site into a living interface, a nostalgic operating system called SpectraOS, where every window, folder, and animation evokes the charm of classic computing.
 
-Spectra Studios is a multidisciplinary creative studio founded by Adishesha Sai Nandkoomar, focused on delivering polished, engaging, and playful digital experiences. This website serves as the official online presence for the studio, showcasing portfolio projects, client work, and service offerings across game development.
+### What's New
 
-This repository contains the full source code for the live site [spectrastudios.co.za](https://spectrastudios.co.za), built with performance, accessibility, and modern responsive design in mind.
+- Desktop-style interface featuring draggable windows, folders, and taskbar.
+- Boot-up sequence and CRT scanline overlay for authentic immersion.
+- Retro palette: navy blues, muted greys, and off-white tones for that 90s OS look.
+- MS Sans Serif-inspired typography system rebuilt using web-safe and pixel fonts.
+- Organized windows for About, Projects, and Contact with each behaving like a native app.
+- Download Resume button styled with 3D Win98 bevels.
+- Improved responsiveness for a seamless retro experience across all devices.
 
----
+### Design Philosophy
 
-## Features
+SpectraOS isn’t just a style — it’s a statement.
+It embodies the nostalgia of early computing while expressing the creative innovation behind every Spectra Studios project.
+Each pixel, border, and shadow is crafted to reflect the tactile, playful spirit of classic game UIs, a digital love letter to the past, reimagined for today.
 
-- **Fully Responsive** design for desktop, tablet, and mobile
-- **Game Development Projects** with images, links, and project descriptions
-- Modern UI with strong visual identity
-- Optimised for SEO and fast load times
-- Contact form with spam protection
-- Social media integrations
+### Tech Stack
 
----
+- HTML5, CSS3, JavaScript
+- Custom window system (draggable, resizable elements)
+- Font system: Share Tech Mono · VT323 · Pixel Operator
+- Retro-inspired color variables and button borders
 
-## Tech Stack
+### Future Plans
 
-| Technology         | Description                        |
-|--------------------|------------------------------------|
-| **HTML5**          | Markup for all pages               |
-| **CSS3**   | Styling with responsive utilities  |
-| **JavaScript** | Interactive features & animation |
-| **Formsubmit Forms**  | Serverless form handling           |
-| **Favicon & Meta** | Custom icons, OG tags, and SEO     |
+- Add Easter Eggs and hidden retro system messages
+- Expand the Projects window with embedded playable demos
+- Integrate a command-line terminal mode for power users
+- Include SpectraOS v2 themes (e.g., CRT Green, Vaporwave Pink, and Slate Grey)
 
----
+### Live Experience
 
-## Live Website
-
-Check out the live version here:  
-[https://spectrastudios.co.za](https://spectrastudios.co.za)
-
-## SEO & Performance
-
-- Meta tags for title, description, and social previews
-- Custom favicon and OG images
-- Optimized images using WebP and lazy loading
-- Accessibility-conscious contrast, labeling, and keyboard navigation
-
----
-
-## Development Tips
-
-To run locally:
-
-```bash
-git clone https://github.com/adishesha09/spectra-studios.git
-cd spectra-studios
-open index.html
-```
-
-Or use [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) in VS Code for automatic reloads.
-
----
-
-## Contact & Credits
-
-This site was designed and built by [Adishesha Sai Nandkoomar](https://www.linkedin.com/in/adishesha-sai-nandkoomar-02850534a/), founder of Spectra Studios.
-
-If you’re interested in collaborating, hiring, or viewing more of my work, reach out via the [contact page](https://spectrastudios.co.za/#contact) or through my [GitHub](https://github.com/adishesha09).
-
----
-
-## License 
-Feel free to fork and remix with credit!
-
----
-
-## Acknowledgements
-
-- Fonts from [Google Fonts](https://fonts.google.com)
-- Icons from [FontAwesome](https://fontawesome.com)
-- Hosted via [GitHub Pages](https://www.github.com)
+Try it here: [https://spectrastudios.co.za](https://spectrastudios.co.za)
+(Best viewed in fullscreen for the full SpectraOS immersion.)
