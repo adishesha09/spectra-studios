@@ -166,12 +166,64 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Contact form submission
+    // Thank you page functionality
+    const thankYouPage = document.getElementById('thank-you-page');
+
+    // Return to desktop from thank you page
+    document.getElementById('return-to-desktop').addEventListener('click', function () {
+        thankYouPage.style.display = 'none';
+        desktop.style.display = 'block';
+    });
+
+    // Close thank you page with X button
+    document.getElementById('thank-you-close').addEventListener('click', function () {
+        thankYouPage.style.display = 'none';
+        desktop.style.display = 'block';
+    });
+
+    // Contact form submission
     document.getElementById('contact-form').addEventListener('submit', function (e) {
-        // FormSubmit will handle the actual submission
-        setTimeout(function () {
-            document.getElementById('desktop').style.display = 'none';
-            document.getElementById('thank-you-page').style.display = 'flex';
-        }, 500);
+        e.preventDefault();
+
+        // Get form data
+        const formData = new FormData(this);
+
+        // Send to FormSubmit
+        fetch(this.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
+        })
+            .then(response => {
+                if (response.ok) {
+                    // Show thank you page on success
+                    desktop.style.display = 'none';
+                    thankYouPage.style.display = 'flex';
+
+                    // Reset form
+                    this.reset();
+                } else {
+                    alert('There was a problem sending your message. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('There was a problem sending your message. Please try again.');
+            });
+    });
+
+    // Make thank you page draggable and resizable
+    document.addEventListener('DOMContentLoaded', function () {
+        const thankYouWindow = document.querySelector('#thank-you-page .window');
+        const thankYouHeader = thankYouWindow.querySelector('.window-header');
+
+        // Make draggable
+        makeDraggable(thankYouWindow, thankYouHeader);
+
+        // Make resizable
+        makeResizable(thankYouWindow);
     });
 
     // Resume download
