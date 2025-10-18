@@ -1,4 +1,5 @@
 window.pikachuInitialized = false;
+window.pikachuAnimationId = null;
 
 document.addEventListener('DOMContentLoaded', function () {
     const bootScreen = document.getElementById('boot-screen');
@@ -23,7 +24,6 @@ document.addEventListener('DOMContentLoaded', function () {
             desktop.style.display = 'block';
             updateClock();
             setInterval(updateClock, 1000);
-
             initPikachuFollower();
         }
 
@@ -61,8 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('shutdown-btn').addEventListener('click', function () {
         if (confirm('Are you sure you want to shutdown SpectraOS?')) {
-            document.getElementById('pikachu').style.display = 'none';
-
+            cleanupPikachu();
             bootScreen.style.display = 'flex';
             desktop.style.display = 'none';
             startMenu.style.display = 'none';
@@ -78,16 +77,32 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    document.getElementById('return-to-desktop').addEventListener('click', function () {
+    document.getElementById('return-to-desktop').addEventListener('click', function() {
         thankYouPage.style.display = 'none';
         desktop.style.display = 'block';
-        setTimeout(showPikachu, 50);
+        cleanupPikachu();
+        setTimeout(initPikachuFollower, 200);
     });
 
-    document.getElementById('thank-you-close').addEventListener('click', function () {
+    document.getElementById('thank-you-close').addEventListener('click', function() {
         thankYouPage.style.display = 'none';
         desktop.style.display = 'block';
-        setTimeout(showPikachu, 50);
+        cleanupPikachu();
+        setTimeout(initPikachuFollower, 200);
+    });
+
+    const folders = document.querySelectorAll('.folder');
+    folders.forEach(folder => {
+        folder.addEventListener('click', function(e) {
+            folders.forEach(f => f.classList.remove('selected'));
+            this.classList.add('selected');
+        });
+    });
+
+    document.getElementById('desktop').addEventListener('click', function(e) {
+        if (e.target.id === 'desktop' || e.target.classList.contains('crt-scanlines')) {
+            folders.forEach(folder => folder.classList.remove('selected'));
+        }
     });
 
     addMobileWindowControls();
@@ -119,7 +134,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const closeBtn = window.querySelector('.close-btn');
 
         makeDraggable(window, header);
-
         makeResizable(window);
 
         minimizeBtn.addEventListener('click', function () {
@@ -143,7 +157,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 window.style.top = '2.5vh';
                 window.style.left = '2.5vw';
                 isMaximized = true;
-
                 window.classList.add('maximized');
 
                 setTimeout(() => {
@@ -158,7 +171,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 isMaximized = false;
                 window.style.zIndex = '20';
                 window.classList.remove('maximized');
-
                 setTimeout(addMobileWindowControls, 10);
             }
         });
@@ -169,7 +181,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     const thankYouPage = document.getElementById('thank-you-page');
-
     document.getElementById('return-to-desktop').addEventListener('click', function () {
         thankYouPage.style.display = 'none';
         desktop.style.display = 'block';
@@ -182,7 +193,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('contact-form').addEventListener('submit', function (e) {
         e.preventDefault();
-
         const formData = new FormData(this);
 
         fetch(this.action, {
@@ -196,7 +206,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (response.ok) {
                     desktop.style.display = 'none';
                     thankYouPage.style.display = 'flex';
-
                     this.reset();
                 } else {
                     alert('There was a problem sending your message. Please try again.');
@@ -210,9 +219,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const thankYouWindow = document.querySelector('#thank-you-page .window');
     const thankYouHeader = thankYouWindow.querySelector('.window-header');
-
     makeDraggable(thankYouWindow, thankYouHeader);
-
     makeResizable(thankYouWindow);
 
     document.querySelector('.download-button').addEventListener('click', function (e) {
@@ -228,7 +235,6 @@ function openWindow(windowId) {
         w.style.zIndex = '10';
     });
     window.style.zIndex = '20';
-
     setTimeout(addMobileWindowControls, 10);
 }
 
@@ -264,7 +270,6 @@ function makeDraggable(element, handle) {
     function dragMouseDown(e) {
         e.preventDefault();
         startDrag(e.clientX, e.clientY);
-
         document.addEventListener('mousemove', elementDrag);
         document.addEventListener('mouseup', closeDragElement);
     }
@@ -273,7 +278,6 @@ function makeDraggable(element, handle) {
         e.preventDefault();
         const touch = e.touches[0];
         startDrag(touch.clientX, touch.clientY);
-
         document.addEventListener('touchmove', elementTouchDrag, { passive: false });
         document.addEventListener('touchend', closeDragElement);
     }
@@ -281,7 +285,6 @@ function makeDraggable(element, handle) {
     function startDrag(clientX, clientY) {
         pos3 = clientX;
         pos4 = clientY;
-
         document.querySelectorAll('.window').forEach(w => {
             w.style.zIndex = '10';
         });
@@ -304,7 +307,6 @@ function makeDraggable(element, handle) {
         pos2 = pos4 - clientY;
         pos3 = clientX;
         pos4 = clientY;
-
         element.style.top = (element.offsetTop - pos2) + "px";
         element.style.left = (element.offsetLeft - pos1) + "px";
     }
@@ -398,10 +400,18 @@ function makeResizable(element) {
 }
 
 function initPikachuFollower() {
-    if (window.pikachuInitialized) {
+    if (window.pikachuInitialized && window.pikachuAnimationId) {
+        const pikachu = document.getElementById('pikachu');
+        pikachu.style.display = 'block';
+        bringPikachuToFront();
         return;
     }
-
+    
+    if (window.pikachuAnimationId) {
+        cancelAnimationFrame(window.pikachuAnimationId);
+        window.pikachuAnimationId = null;
+    }
+    
     const pikachu = document.getElementById('pikachu');
     let mouseX = 0;
     let mouseY = 0;
@@ -410,114 +420,144 @@ function initPikachuFollower() {
     let velocityX = 0;
     let velocityY = 0;
     let isFollowing = false;
-
+    
     function bringPikachuToFront() {
-        pikachu.style.zIndex = '1999';
+        if (pikachu) {
+            pikachu.style.zIndex = '1999';
+        }
     }
-
-    document.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-
-        if (!isFollowing) {
+    
+    function resetPikachu() {
+        pikachuX = Math.random() * (window.innerWidth - 64);
+        pikachuY = Math.random() * (window.innerHeight - 64);
+        velocityX = 0;
+        velocityY = 0;
+        isFollowing = false;
+        
+        if (pikachu) {
+            pikachu.style.left = `${pikachuX}px`;
+            pikachu.style.top = `${pikachuY}px`;
             pikachu.style.display = 'block';
             bringPikachuToFront();
-            pikachuX = Math.random() * (window.innerWidth - 64);
-            pikachuY = Math.random() * (window.innerHeight - 64);
+        }
+    }
+    
+    function handleMouseMove(e) {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        
+        if (!isFollowing) {
             isFollowing = true;
         }
-    });
-
+    }
+    
     function animatePikachu() {
-        if (isFollowing && pikachu.style.display !== 'none') {
+        if (isFollowing && pikachu && pikachu.style.display !== 'none') {
             const dx = mouseX - pikachuX;
             const dy = mouseY - pikachuY;
             const distance = Math.sqrt(dx * dx + dy * dy);
-
+            
             if (distance > 60) {
                 const acceleration = 0.1;
                 const forceX = (dx / distance) * acceleration;
                 const forceY = (dy / distance) * acceleration;
-
+                
                 velocityX += forceX;
                 velocityY += forceY;
-
+                
                 velocityX *= 0.95;
                 velocityY *= 0.95;
-
+                
                 const speed = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
                 const maxSpeed = 5;
                 if (speed > maxSpeed) {
                     velocityX = (velocityX / speed) * maxSpeed;
                     velocityY = (velocityY / speed) * maxSpeed;
                 }
-
+                
                 pikachuX += velocityX;
                 pikachuY += velocityY;
-
+                
                 pikachuX = Math.max(0, Math.min(window.innerWidth - 64, pikachuX));
                 pikachuY = Math.max(0, Math.min(window.innerHeight - 64, pikachuY));
-
+                
                 pikachu.style.left = `${pikachuX}px`;
                 pikachu.style.top = `${pikachuY}px`;
-
+                
                 if (velocityX > 0.1) {
                     pikachu.style.transform = 'scaleX(1)';
                 } else if (velocityX < -0.1) {
                     pikachu.style.transform = 'scaleX(-1)';
                 }
-
+                
                 const bob = Math.sin(Date.now() / 100) * 3;
                 pikachu.style.transform += ` translateY(${bob}px)`;
-
+                
                 bringPikachuToFront();
             } else {
                 velocityX *= 0.8;
                 velocityY *= 0.8;
             }
         }
-
-        requestAnimationFrame(animatePikachu);
+        
+        window.pikachuAnimationId = requestAnimationFrame(animatePikachu);
     }
-
-    animatePikachu();
-
+    
+    document.addEventListener('mousemove', handleMouseMove);
+    
     document.addEventListener('mouseleave', () => {
-        pikachu.style.display = 'none';
+        if (pikachu) {
+            pikachu.style.display = 'none';
+        }
     });
-
+    
     document.addEventListener('mouseenter', () => {
-        if (isFollowing) {
+        if (isFollowing && pikachu) {
             pikachu.style.display = 'block';
             bringPikachuToFront();
         }
     });
-
+    
     document.addEventListener('click', bringPikachuToFront);
     document.addEventListener('mousedown', bringPikachuToFront);
-
-    document.getElementById('taskbar').addEventListener('click', bringPikachuToFront);
-    document.getElementById('start-btn').addEventListener('click', bringPikachuToFront);
-
-    const originalOpenWindow = window.openWindow;
-    window.openWindow = function (windowId) {
-        originalOpenWindow(windowId);
-        setTimeout(bringPikachuToFront, 10);
-    };
-
+    
+    const taskbar = document.getElementById('taskbar');
+    const startBtn = document.getElementById('start-btn');
+    
+    if (taskbar) taskbar.addEventListener('click', bringPikachuToFront);
+    if (startBtn) startBtn.addEventListener('click', bringPikachuToFront);
+    
+    resetPikachu();
+    window.pikachuAnimationId = requestAnimationFrame(animatePikachu);
     window.pikachuInitialized = true;
 }
 
 function showPikachu() {
     const pikachu = document.getElementById('pikachu');
     if (pikachu) {
-        pikachu.style.display = 'block';
-        bringPikachuToFront();
-        const event = new MouseEvent('mousemove', {
-            view: window,
-            bubbles: true,
-            cancelable: true
-        });
-        document.dispatchEvent(event);
+        if (window.pikachuAnimationId) {
+            cancelAnimationFrame(window.pikachuAnimationId);
+            window.pikachuAnimationId = null;
+        }
+        
+        const newPikachu = pikachu.cloneNode(true);
+        pikachu.parentNode.replaceChild(newPikachu, pikachu);
+        
+        setTimeout(() => {
+            initPikachuFollower();
+        }, 100);
+    }
+}
+
+function cleanupPikachu() {
+    if (window.pikachuAnimationId) {
+        cancelAnimationFrame(window.pikachuAnimationId);
+        window.pikachuAnimationId = null;
+    }
+    window.pikachuInitialized = false;
+    
+    const pikachu = document.getElementById('pikachu');
+    if (pikachu) {
+        pikachu.style.display = 'none';
     }
 }
