@@ -30,7 +30,6 @@ body {
   width: 100vw;
 }
 
-/* === GLOBAL TEXT SETTINGS === */
 body {
   font-family: var(--font-body);
   font-size: 0.9rem;
@@ -260,7 +259,6 @@ small {
   line-height: 1.5;
 }
 
-/* Animation for the checkmark */
 @keyframes checkmarkBounce {
   0% {
     transform: scale(0.8);

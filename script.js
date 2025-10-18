@@ -1,4 +1,3 @@
-// Boot sequence
 document.addEventListener('DOMContentLoaded', function () {
     const bootScreen = document.getElementById('boot-screen');
     const desktop = document.getElementById('desktop');
@@ -7,21 +6,16 @@ document.addEventListener('DOMContentLoaded', function () {
     const startMenu = document.getElementById('start-menu');
     const startBtn = document.getElementById('start-btn');
 
-    // Check if we're coming from a form submission
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('submitted') === 'true') {
-        // Show thank you page directly
         bootScreen.style.display = 'none';
         desktop.style.display = 'none';
         thankYouPage.style.display = 'flex';
     } else {
-        // Normal boot sequence
-        // Show enter prompt after boot text animation
         setTimeout(() => {
             enterPrompt.style.display = 'block';
         }, 2500);
 
-        // Function to proceed to desktop
         function proceedToDesktop() {
             bootScreen.style.display = 'none';
             desktop.style.display = 'block';
@@ -29,36 +23,30 @@ document.addEventListener('DOMContentLoaded', function () {
             setInterval(updateClock, 1000);
         }
 
-        // Handle Enter key to proceed to desktop
         document.addEventListener('keydown', function (e) {
             if (e.key === 'Enter') {
                 proceedToDesktop();
             }
         });
 
-        // Also allow clicking on boot screen to proceed
         bootScreen.addEventListener('click', function () {
             proceedToDesktop();
         });
     }
 
-    // Start menu functionality
     startBtn.addEventListener('click', function (e) {
         e.stopPropagation();
         startMenu.style.display = startMenu.style.display === 'block' ? 'none' : 'block';
     });
 
-    // Close start menu when clicking elsewhere
     document.addEventListener('click', function () {
         startMenu.style.display = 'none';
     });
 
-    // Prevent start menu from closing when clicking inside it
     startMenu.addEventListener('click', function (e) {
         e.stopPropagation();
     });
 
-    // Start menu items functionality
     document.querySelectorAll('.start-menu-item[data-window]').forEach(item => {
         item.addEventListener('click', function () {
             const windowId = this.getAttribute('data-window');
@@ -67,7 +55,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Shutdown button functionality
     document.getElementById('shutdown-btn').addEventListener('click', function () {
         if (confirm('Are you sure you want to shutdown SpectraOS?')) {
             bootScreen.style.display = 'flex';
@@ -85,26 +72,21 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Return to desktop from thank you page
     document.getElementById('return-to-desktop').addEventListener('click', function () {
         thankYouPage.style.display = 'none';
         desktop.style.display = 'block';
     });
 
-    // Initialize mobile window controls
     addMobileWindowControls();
 });
 
-// Update clock in taskbar
 function updateClock() {
     const now = new Date();
     const timeString = now.toLocaleTimeString();
     document.getElementById('clock').textContent = timeString;
 }
 
-// Window management
 document.addEventListener('DOMContentLoaded', function () {
-    // Folder click handlers
     document.getElementById('about-folder').addEventListener('click', function () {
         openWindow('about-window');
     });
@@ -117,25 +99,20 @@ document.addEventListener('DOMContentLoaded', function () {
         openWindow('contact-window');
     });
 
-    // Window controls
     document.querySelectorAll('.window').forEach(window => {
         const header = window.querySelector('.window-header');
         const minimizeBtn = window.querySelector('.minimize-btn');
         const maximizeBtn = window.querySelector('.maximize-btn');
         const closeBtn = window.querySelector('.close-btn');
 
-        // Dragging
         makeDraggable(window, header);
 
-        // Resizing
         makeResizable(window);
 
-        // Minimize
         minimizeBtn.addEventListener('click', function () {
             window.style.display = 'none';
         });
 
-        // Maximize/Restore
         let isMaximized = false;
         let originalSize = {};
 
@@ -148,20 +125,16 @@ document.addEventListener('DOMContentLoaded', function () {
                     left: window.style.left
                 };
 
-                // Use viewport units for mobile compatibility
                 window.style.width = '95vw';
                 window.style.height = '85vh';
                 window.style.top = '2.5vh';
                 window.style.left = '2.5vw';
                 isMaximized = true;
 
-                // Add maximized class for mobile styling
                 window.classList.add('maximized');
 
-                // Force reflow and ensure buttons are clickable
                 setTimeout(() => {
-                    window.style.zIndex = '25'; // Higher z-index when maximized
-                    // Re-initialize mobile controls after maximize
+                    window.style.zIndex = '25';
                     addMobileWindowControls();
                 }, 10);
             } else {
@@ -170,44 +143,35 @@ document.addEventListener('DOMContentLoaded', function () {
                 window.style.top = originalSize.top;
                 window.style.left = originalSize.left;
                 isMaximized = false;
-                window.style.zIndex = '20'; // Restore normal z-index
+                window.style.zIndex = '20';
                 window.classList.remove('maximized');
 
-                // Re-initialize mobile controls after restore
                 setTimeout(addMobileWindowControls, 10);
             }
         });
 
-        // Close
         closeBtn.addEventListener('click', function () {
             window.style.display = 'none';
         });
     });
 
-    // Contact form submission
-    // Thank you page functionality
     const thankYouPage = document.getElementById('thank-you-page');
 
-    // Return to desktop from thank you page
     document.getElementById('return-to-desktop').addEventListener('click', function () {
         thankYouPage.style.display = 'none';
         desktop.style.display = 'block';
     });
 
-    // Close thank you page with X button
     document.getElementById('thank-you-close').addEventListener('click', function () {
         thankYouPage.style.display = 'none';
         desktop.style.display = 'block';
     });
 
-    // Contact form submission
     document.getElementById('contact-form').addEventListener('submit', function (e) {
         e.preventDefault();
 
-        // Get form data
         const formData = new FormData(this);
 
-        // Send to FormSubmit
         fetch(this.action, {
             method: 'POST',
             body: formData,
@@ -217,11 +181,9 @@ document.addEventListener('DOMContentLoaded', function () {
         })
             .then(response => {
                 if (response.ok) {
-                    // Show thank you page on success
                     desktop.style.display = 'none';
                     thankYouPage.style.display = 'flex';
 
-                    // Reset form
                     this.reset();
                 } else {
                     alert('There was a problem sending your message. Please try again.');
@@ -233,42 +195,32 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     });
 
-    // Make thank you page draggable and resizable
     const thankYouWindow = document.querySelector('#thank-you-page .window');
     const thankYouHeader = thankYouWindow.querySelector('.window-header');
 
-    // Make draggable
     makeDraggable(thankYouWindow, thankYouHeader);
 
-    // Make resizable
     makeResizable(thankYouWindow);
 
-    // Resume download
     document.querySelector('.download-button').addEventListener('click', function (e) {
-        // Let the natural download happen via the anchor tag
         console.log('Resume download initiated');
     });
 });
 
-// Function to open a window
 function openWindow(windowId) {
     const window = document.getElementById(windowId);
     window.style.display = 'block';
 
-    // Bring to front
     document.querySelectorAll('.window').forEach(w => {
         w.style.zIndex = '10';
     });
     window.style.zIndex = '20';
 
-    // Ensure mobile controls are initialized
     setTimeout(addMobileWindowControls, 10);
 }
 
-// Add mobile-specific touch event handlers for window controls
 function addMobileWindowControls() {
     document.querySelectorAll('.window-control').forEach(control => {
-        // Remove any existing touch listeners to avoid duplicates
         control.removeEventListener('touchstart', handleTouchControl);
         control.addEventListener('touchstart', handleTouchControl, { passive: false });
     });
@@ -286,16 +238,13 @@ function handleTouchControl(e) {
     } else if (control.classList.contains('close-btn')) {
         window.style.display = 'none';
     } else if (control.classList.contains('maximize-btn')) {
-        // Let the existing click handler handle this
         control.click();
     }
 }
 
-// Make element draggable
 function makeDraggable(element, handle) {
     let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
 
-    // Add both mouse and touch events
     handle.addEventListener('mousedown', dragMouseDown);
     handle.addEventListener('touchstart', dragTouchDown, { passive: false });
 
@@ -317,11 +266,9 @@ function makeDraggable(element, handle) {
     }
 
     function startDrag(clientX, clientY) {
-        // Get initial cursor position
         pos3 = clientX;
         pos4 = clientY;
 
-        // Bring to front
         document.querySelectorAll('.window').forEach(w => {
             w.style.zIndex = '10';
         });
@@ -340,13 +287,11 @@ function makeDraggable(element, handle) {
     }
 
     function updatePosition(clientX, clientY) {
-        // Calculate new position
         pos1 = pos3 - clientX;
         pos2 = pos4 - clientY;
         pos3 = clientX;
         pos4 = clientY;
 
-        // Set new position
         element.style.top = (element.offsetTop - pos2) + "px";
         element.style.left = (element.offsetLeft - pos1) + "px";
     }
@@ -359,7 +304,6 @@ function makeDraggable(element, handle) {
     }
 }
 
-// Make element resizable
 function makeResizable(element) {
     const handles = element.querySelectorAll('.resize-handle');
 
