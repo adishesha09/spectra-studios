@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
             desktop.style.display = 'block';
             updateClock();
             setInterval(updateClock, 1000);
+            initPikachuFollower();
         }
 
         document.addEventListener('keydown', function (e) {
@@ -57,6 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('shutdown-btn').addEventListener('click', function () {
         if (confirm('Are you sure you want to shutdown SpectraOS?')) {
+            document.getElementById('pikachu').style.display = 'none';
             bootScreen.style.display = 'flex';
             desktop.style.display = 'none';
             startMenu.style.display = 'none';
@@ -79,6 +81,109 @@ document.addEventListener('DOMContentLoaded', function () {
 
     addMobileWindowControls();
 });
+
+
+function initPikachuFollower() {
+    const pikachu = document.getElementById('pikachu');
+    let mouseX = 0;
+    let mouseY = 0;
+    let pikachuX = 0;
+    let pikachuY = 0;
+    let velocityX = 0;
+    let velocityY = 0;
+    let isFollowing = false;
+
+    function bringPikachuToFront() {
+        pikachu.style.zIndex = '100';
+    }
+
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+
+        if (!isFollowing) {
+            pikachu.style.display = 'block';
+            bringPikachuToFront();
+            pikachuX = Math.random() * (window.innerWidth - 64);
+            pikachuY = Math.random() * (window.innerHeight - 64);
+            isFollowing = true;
+        }
+    });
+
+    function animatePikachu() {
+        if (isFollowing) {
+            const dx = mouseX - pikachuX;
+            const dy = mouseY - pikachuY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance > 60) {
+                const acceleration = 0.1;
+                const forceX = (dx / distance) * acceleration;
+                const forceY = (dy / distance) * acceleration;
+
+                velocityX += forceX;
+                velocityY += forceY;
+
+                velocityX *= 0.95;
+                velocityY *= 0.95;
+
+                const speed = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
+                const maxSpeed = 5;
+                if (speed > maxSpeed) {
+                    velocityX = (velocityX / speed) * maxSpeed;
+                    velocityY = (velocityY / speed) * maxSpeed;
+                }
+
+                pikachuX += velocityX;
+                pikachuY += velocityY;
+
+                pikachuX = Math.max(0, Math.min(window.innerWidth - 64, pikachuX));
+                pikachuY = Math.max(0, Math.min(window.innerHeight - 64, pikachuY));
+
+                pikachu.style.left = `${pikachuX}px`;
+                pikachu.style.top = `${pikachuY}px`;
+
+                if (velocityX > 0.1) {
+                    pikachu.style.transform = 'scaleX(1)';
+                } else if (velocityX < -0.1) {
+                    pikachu.style.transform = 'scaleX(-1)';
+                }
+
+                const bob = Math.sin(Date.now() / 100) * 3;
+                pikachu.style.transform += ` translateY(${bob}px)`;
+
+                bringPikachuToFront();
+            } else {
+                velocityX *= 0.8;
+                velocityY *= 0.8;
+            }
+        }
+
+        requestAnimationFrame(animatePikachu);
+    }
+
+    animatePikachu();
+
+    document.addEventListener('mouseleave', () => {
+        pikachu.style.display = 'none';
+    });
+
+    document.addEventListener('mouseenter', () => {
+        if (isFollowing) {
+            pikachu.style.display = 'block';
+            bringPikachuToFront();
+        }
+    });
+
+    document.addEventListener('click', bringPikachuToFront);
+    document.addEventListener('mousedown', bringPikachuToFront);
+
+    const originalOpenWindow = window.openWindow;
+    window.openWindow = function (windowId) {
+        originalOpenWindow(windowId);
+        setTimeout(bringPikachuToFront, 10);
+    };
+}
 
 function updateClock() {
     const now = new Date();

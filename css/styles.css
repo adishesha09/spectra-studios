@@ -234,6 +234,17 @@ small {
   overflow: hidden;
 }
 
+#pikachu {
+  position: fixed;
+  width: 64px;
+  height: 64px;
+  z-index: 100;
+  pointer-events: none;
+  transition: transform 0.1s ease;
+  image-rendering: pixelated;
+  display: none;
+}
+
 /* Thank You Page */
 #thank-you-page {
   position: fixed;
