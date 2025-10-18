@@ -10,7 +10,7 @@ Step into a digital time machine! Spectra Studios has transformed from a convent
 
 SpectraOS isn't just viewed, it's explored. Every click, drag, and interaction feels like you're using a genuine retro operating system, complete with boot sequences, draggable windows, and that satisfying CRT glow.
 
-## What's New in v2.1
+## What's New in v2.0
 
 ### The Pikachu Companion Feature
 
