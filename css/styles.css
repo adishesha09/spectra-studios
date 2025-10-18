@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
 :root {
+  /* Colors */
   --bg-color: #c0c0c0;
   --desktop-bg: linear-gradient(135deg, #000080, #000000);
   --window-bg: #c0c0c0;
@@ -10,9 +11,30 @@
   --button-bg: #c0c0c0;
   --button-border: #808080;
   --scanline-color: rgba(0, 0, 0, 0.1);
+  
+  /* Typography */
   --font-ui: "MS Sans Serif", "Microsoft Sans Serif", "Tahoma", "Geneva", sans-serif;
   --font-body: "Share Tech Mono", "Consolas", "Lucida Console", monospace;
   --font-title: "Pixel Operator", "VT323", "Share Tech Mono", monospace;
+  --base-font-size: 0.9rem;
+  
+  /* Borders & Effects */
+  --border-raised: 2px solid var(--button-border);
+  --border-inset: 2px inset var(--button-border);
+  --border-top-left: 2px solid #fff;
+  --box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
+  
+  /* Spacing */
+  --spacing-xs: 5px;
+  --spacing-sm: 10px;
+  --spacing-md: 15px;
+  --spacing-lg: 20px;
+  
+  /* Z-indices */
+  --z-desktop: 1;
+  --z-window: 10;
+  --z-taskbar: 1000;
+  --z-boot: 2000;
 }
 
 * {
@@ -28,13 +50,9 @@ body {
   overflow: hidden;
   height: 100vh;
   width: 100vw;
-}
-
-body {
   font-family: var(--font-body);
   font-size: 0.9rem;
   line-height: 1.45;
-  color: var(--text-color);
   -webkit-font-smoothing: none;
   -moz-osx-font-smoothing: grayscale;
   image-rendering: pixelated;
@@ -155,7 +173,7 @@ small {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: var(--z-boot);
   font-size: 1.5rem;
 }
 
@@ -234,8 +252,9 @@ small {
   position: absolute !important;
   top: 50% !important;
   left: 50% !important;
-  transform: translate(-50%, -50%) !important;
+  transform: translate3d(-50%, -50%, 0) !important;
   display: block !important;
+  will-change: transform;
 }
 
 #thank-you-page .window-content {
@@ -387,25 +406,18 @@ small {
 }
 
 /* Windows */
-.window-header,
-.window-title {
-  font-family: var(--font-title);
-  font-size: 1rem;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-}
-
 .window {
   position: absolute;
   background-color: var(--window-bg);
-  border: 2px solid var(--button-border);
-  border-top: 2px solid #fff;
-  border-left: 2px solid #fff;
-  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
+  border: var(--border-raised);
+  border-top: var(--border-top-left);
+  border-left: var(--border-top-left);
+  box-shadow: var(--box-shadow);
   min-width: 300px;
   min-height: 200px;
   display: none;
-  z-index: 10;
+  z-index: var(--z-window);
+  will-change: transform;
 }
 
 .window-header {
@@ -689,7 +701,7 @@ button:active {
 
   #start-menu {
     width: 180px;
-    bottom: 35px;
+    bottom: 45px;
   }
 
   .window-control {
@@ -708,8 +720,21 @@ button:active {
     padding: 8px 12px;
   }
 
+  #taskbar {
+    height: 40px;
+    padding: 0 15px;
+    position: fixed;
+    z-index: var(--z-taskbar);
+  }
+
+  .taskbar-time {
+    font-size: 1rem;
+    padding: 5px 10px;
+  }
+
   body {
     touch-action: manipulation;
+    padding-bottom: 40px;
   }
 }
 
