@@ -1,4 +1,4 @@
-# SpectraOS v2.1 — The Interactive Desktop Experience
+# SpectraOS v2.0 — The Interactive Desktop Experience
 
 "Where nostalgia meets innovation — a living, breathing retro desktop that remembers why we fell in love with computers in the first place."
 
