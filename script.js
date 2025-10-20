@@ -92,6 +92,7 @@ function addMobileWindowControls() {
         if (control.classList.contains('maximize-btn')) {
             const win = control.closest('.window');
             if (win && !control._maximizeHandler) {
+                console.log('Setting up maximize button for mobile');
                 setupMaximizeButton(win, control);
             }
         }
@@ -113,34 +114,48 @@ function setupMaximizeButton(win, maximizeBtn) {
                 width: win.style.width || getComputedStyle(win).width,
                 height: win.style.height || getComputedStyle(win).height,
                 top: win.style.top || getComputedStyle(win).top,
-                left: win.style.left || getComputedStyle(win).left
+                left: win.style.left || getComputedStyle(win).left,
+                position: win.style.position
             };
 
             win.style.width = '95vw';
             win.style.height = '85vh';
             win.style.top = '2.5vh';
             win.style.left = '2.5vw';
+            win.style.position = 'fixed';
             isMaximized = true;
             win.classList.add('maximized');
             win.style.zIndex = '25';
+
+            console.log('Window maximized');
         } else {
             win.style.width = originalSize.width;
             win.style.height = originalSize.height;
             win.style.top = originalSize.top;
             win.style.left = originalSize.left;
+            win.style.position = originalSize.position || 'absolute';
             isMaximized = false;
             win.style.zIndex = '20';
             win.classList.remove('maximized');
+
+            console.log('Window restored');
         }
 
         setTimeout(addMobileWindowControls, 10);
         return false;
     };
 
-    maximizeBtn._maximizeHandler = handleMaximize;
+    maximizeBtn.removeEventListener('click', handleMaximize);
+    maximizeBtn.removeEventListener('touchstart', handleMaximize);
 
     maximizeBtn.addEventListener('click', handleMaximize);
-    maximizeBtn.addEventListener('touchstart', handleMaximize, { passive: false });
+    maximizeBtn.addEventListener('touchstart', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        handleMaximize(e);
+    }, { passive: false });
+
+    maximizeBtn._maximizeHandler = handleMaximize;
 }
 
 function handleTouchControl(e) {
