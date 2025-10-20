@@ -4,11 +4,22 @@ window.pikachuAnimationId = null;
 let currentTheme = 'midnight-blue';
 
 function changeTheme(themeName) {
+    console.log(`Changing theme to: ${themeName}`);
+
     document.body.classList.remove('theme-crt-green', 'theme-vaporwave-pink', 'theme-midnight-blue');
+
     document.body.classList.add(`theme-${themeName}`);
+
     currentTheme = themeName;
+
     localStorage.setItem('spectraos-theme', themeName);
-    console.log(`Theme changed to: ${themeName}`);
+
+    document.body.style.animation = 'none';
+    setTimeout(() => {
+        document.body.style.animation = '';
+    }, 10);
+
+    console.log(`Theme successfully changed to: ${themeName}`);
 }
 
 function updateActiveThemeOption(themeName) {
@@ -133,6 +144,24 @@ document.addEventListener('DOMContentLoaded', function () {
     const savedTheme = localStorage.getItem('spectraos-theme');
     if (savedTheme) {
         changeTheme(savedTheme);
+    }
+
+    if (typeof initThemeSelection === 'function') {
+        initThemeSelection();
+    }
+
+    document.querySelectorAll('.start-menu-item[data-window="themes-window"]').forEach(item => {
+        item.addEventListener('click', function () {
+            setTimeout(initThemeSelection, 100);
+        });
+    });
+
+    if (themesFolderEl) {
+        themesFolderEl.addEventListener('click', function (e) {
+            e.stopPropagation();
+            openWindow('themes-window');
+            setTimeout(initThemeSelection, 100);
+        });
     }
 
     document.querySelectorAll('.theme-option').forEach(option => {
@@ -286,28 +315,47 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function openWindow(windowId) {
+    console.log(`Opening window: ${windowId}`);
     const window = document.getElementById(windowId);
+
+    if (!window) {
+        console.error(`Window not found: ${windowId}`);
+        return;
+    }
+
     window.style.display = 'block';
 
     document.querySelectorAll('.window').forEach(w => {
         w.style.zIndex = '10';
     });
     window.style.zIndex = '20';
+
     if (windowId === 'themes-window') {
-        setTimeout(initThemeSelection, 50);
+        console.log('Themes window opened, initializing theme selection');
+        setTimeout(() => {
+            initThemeSelection();
+            window.offsetHeight;
+        }, 50);
     }
 
     setTimeout(addMobileWindowControls, 10);
 }
-
 function initThemeSelection() {
-    document.querySelectorAll('.theme-option').forEach(option => {
-        option.replaceWith(option.cloneNode(true));
+    console.log('Initializing theme selection...');
+
+    const themeOptions = document.querySelectorAll('.theme-option');
+    console.log(`Found ${themeOptions.length} theme options`);
+
+    themeOptions.forEach(option => {
+        const newOption = option.cloneNode(true);
+        option.parentNode.replaceChild(newOption, option);
     });
 
     document.querySelectorAll('.theme-option').forEach(option => {
         option.addEventListener('click', function (e) {
             e.preventDefault();
+            e.stopPropagation();
+            console.log('Theme option clicked:', this.getAttribute('data-theme'));
             const theme = this.getAttribute('data-theme');
             changeTheme(theme);
             updateActiveThemeOption(theme);
@@ -315,9 +363,21 @@ function initThemeSelection() {
 
         option.addEventListener('touchstart', function (e) {
             e.preventDefault();
+            e.stopPropagation();
+            console.log('Theme option touched:', this.getAttribute('data-theme'));
             const theme = this.getAttribute('data-theme');
             changeTheme(theme);
             updateActiveThemeOption(theme);
+        }, { passive: false });
+
+        option.addEventListener('touchstart', function () {
+            this.style.backgroundColor = 'var(--highlight)';
+            this.style.color = '#fff';
+        }, { passive: false });
+
+        option.addEventListener('touchend', function () {
+            this.style.backgroundColor = '';
+            this.style.color = '';
         }, { passive: false });
     });
 
