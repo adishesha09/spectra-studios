@@ -146,6 +146,12 @@ document.addEventListener('DOMContentLoaded', function () {
         // Add both click and touchstart events for better mobile support
         themesFolderEl.addEventListener('click', handleThemesFolderClick);
         themesFolderEl.addEventListener('touchstart', handleThemesFolderClick, { passive: false });
+        themesFolderEl.addEventListener('touchend', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            openWindow('themes-window');
+            setTimeout(initThemeSelection, 100);
+        }, { passive: false });
     }
 
     const savedTheme = localStorage.getItem('spectraos-theme');
@@ -161,6 +167,12 @@ document.addEventListener('DOMContentLoaded', function () {
         item.addEventListener('click', function () {
             setTimeout(initThemeSelection, 100);
         });
+        item.addEventListener('touchend', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            openWindow('themes-window');
+            setTimeout(initThemeSelection, 100);
+        }, { passive: false });
     });
 
     if (themesFolderEl) {
@@ -376,21 +388,19 @@ function initThemeSelection() {
         option.addEventListener('touchstart', function (e) {
             e.preventDefault();
             e.stopPropagation();
-            console.log('Theme option touched:', this.getAttribute('data-theme'));
-            const theme = this.getAttribute('data-theme');
-            changeTheme(theme);
-            updateActiveThemeOption(theme);
-        }, { passive: false });
-
-        // Visual feedback for touch
-        option.addEventListener('touchstart', function () {
+            // Visual feedback for touch
             this.style.backgroundColor = 'var(--highlight)';
             this.style.color = '#fff';
         }, { passive: false });
 
-        option.addEventListener('touchend', function () {
+        option.addEventListener('touchend', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
             this.style.backgroundColor = '';
             this.style.color = '';
+            const theme = this.getAttribute('data-theme');
+            changeTheme(theme);
+            updateActiveThemeOption(theme);
         }, { passive: false });
     });
 
