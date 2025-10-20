@@ -88,7 +88,59 @@ function addMobileWindowControls() {
         control.removeEventListener('touchstart', handleTouchControl);
         control.addEventListener('touchstart', handleTouchControl, { passive: false });
         control.style.touchAction = 'manipulation';
+
+        if (control.classList.contains('maximize-btn')) {
+            const win = control.closest('.window');
+            if (win && !control._maximizeHandler) {
+                setupMaximizeButton(win, control);
+            }
+        }
     });
+}
+
+function setupMaximizeButton(win, maximizeBtn) {
+    let isMaximized = false;
+    let originalSize = {};
+
+    const handleMaximize = function (e) {
+        if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        if (!isMaximized) {
+            originalSize = {
+                width: win.style.width || getComputedStyle(win).width,
+                height: win.style.height || getComputedStyle(win).height,
+                top: win.style.top || getComputedStyle(win).top,
+                left: win.style.left || getComputedStyle(win).left
+            };
+
+            win.style.width = '95vw';
+            win.style.height = '85vh';
+            win.style.top = '2.5vh';
+            win.style.left = '2.5vw';
+            isMaximized = true;
+            win.classList.add('maximized');
+            win.style.zIndex = '25';
+        } else {
+            win.style.width = originalSize.width;
+            win.style.height = originalSize.height;
+            win.style.top = originalSize.top;
+            win.style.left = originalSize.left;
+            isMaximized = false;
+            win.style.zIndex = '20';
+            win.classList.remove('maximized');
+        }
+
+        setTimeout(addMobileWindowControls, 10);
+        return false;
+    };
+
+    maximizeBtn._maximizeHandler = handleMaximize;
+
+    maximizeBtn.addEventListener('click', handleMaximize);
+    maximizeBtn.addEventListener('touchstart', handleMaximize, { passive: false });
 }
 
 function handleTouchControl(e) {
@@ -103,9 +155,13 @@ function handleTouchControl(e) {
     } else if (control.classList.contains('close-btn')) {
         win.style.display = 'none';
     } else if (control.classList.contains('maximize-btn')) {
-        const maxBtn = win.querySelector('.maximize-btn');
-        if (maxBtn && maxBtn._maximizeHandler) {
-            maxBtn._maximizeHandler(e);
+        if (control._maximizeHandler) {
+            control._maximizeHandler(e);
+        } else {
+            setupMaximizeButton(win, control);
+            if (control._maximizeHandler) {
+                control._maximizeHandler(e);
+            }
         }
     }
 }
@@ -354,7 +410,6 @@ function cleanupPikachu() {
     const pikachu = document.getElementById('pikachu');
     if (pikachu) pikachu.style.display = 'none';
 }
-
 
 document.addEventListener('DOMContentLoaded', function () {
     const bootScreen = document.getElementById('boot-screen');
@@ -618,7 +673,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (minimizeBtn) {
             const handleMinimize = function (e) {
-                e.stopPropagation();
+                if (e) e.stopPropagation();
                 win.style.display = 'none';
             };
 
@@ -631,51 +686,12 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         if (maximizeBtn) {
-            let isMaximized = false;
-            let originalSize = {};
-
-            const handleMaximize = function (e) {
-                e.stopPropagation();
-                if (e.preventDefault) e.preventDefault();
-
-                if (!isMaximized) {
-                    originalSize = {
-                        width: win.style.width || getComputedStyle(win).width,
-                        height: win.style.height || getComputedStyle(win).height,
-                        top: win.style.top || getComputedStyle(win).top,
-                        left: win.style.left || getComputedStyle(win).left
-                    };
-
-                    win.style.width = '95vw';
-                    win.style.height = '85vh';
-                    win.style.top = '2.5vh';
-                    win.style.left = '2.5vw';
-                    isMaximized = true;
-                    win.classList.add('maximized');
-                    win.style.zIndex = '25';
-                } else {
-                    win.style.width = originalSize.width;
-                    win.style.height = originalSize.height;
-                    win.style.top = originalSize.top;
-                    win.style.left = originalSize.left;
-                    isMaximized = false;
-                    win.style.zIndex = '20';
-                    win.classList.remove('maximized');
-                }
-
-                setTimeout(addMobileWindowControls, 10);
-                return false;
-            };
-
-            maximizeBtn._maximizeHandler = handleMaximize;
-
-            maximizeBtn.addEventListener('click', handleMaximize);
-            maximizeBtn.addEventListener('touchstart', handleMaximize, { passive: false });
+            setupMaximizeButton(win, maximizeBtn);
         }
 
         if (closeBtn) {
             const handleClose = function (e) {
-                e.stopPropagation();
+                if (e) e.stopPropagation();
                 win.style.display = 'none';
             };
 
@@ -695,7 +711,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     setTimeout(addMobileWindowControls, 50);
-
 });
 
 function updateClock() {
