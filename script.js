@@ -97,10 +97,16 @@ function handleTouchControl(e) {
     const control = e.currentTarget;
     const win = control.closest('.window');
     if (!win) return;
-    if (control.classList.contains('minimize-btn') || control.classList.contains('close-btn')) {
+
+    if (control.classList.contains('minimize-btn')) {
+        win.style.display = 'none';
+    } else if (control.classList.contains('close-btn')) {
         win.style.display = 'none';
     } else if (control.classList.contains('maximize-btn')) {
-        control.click();
+        const maxBtn = win.querySelector('.maximize-btn');
+        if (maxBtn && maxBtn._maximizeHandler) {
+            maxBtn._maximizeHandler(e);
+        }
     }
 }
 
@@ -384,7 +390,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (startBtn) {
         const handleStartClick = function (e) {
             e.stopPropagation();
-            e.preventDefault(); // Add this
+            e.preventDefault();
             startMenu.style.display = startMenu.style.display === 'block' ? 'none' : 'block';
             return false;
         };
@@ -399,14 +405,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     document.addEventListener('click', function (e) {
-        // Only hide start menu if click is NOT on start button or start menu
         if (startMenu && !startMenu.contains(e.target) && e.target !== startBtn) {
             startMenu.style.display = 'none';
         }
     });
 
     document.addEventListener('touchstart', function (e) {
-        // Only hide start menu if touch is NOT on start button or start menu
         if (startMenu && !startMenu.contains(e.target) && e.target !== startBtn) {
             startMenu.style.display = 'none';
         }
@@ -612,7 +616,6 @@ document.addEventListener('DOMContentLoaded', function () {
         if (header) makeDraggable(win, header);
         makeResizable(win);
 
-        // Improved minimize button with proper touch handling
         if (minimizeBtn) {
             const handleMinimize = function (e) {
                 e.stopPropagation();
@@ -627,30 +630,29 @@ document.addEventListener('DOMContentLoaded', function () {
             }, { passive: false });
         }
 
-        // Improved maximize button with proper touch handling
         if (maximizeBtn) {
             let isMaximized = false;
             let originalSize = {};
 
             const handleMaximize = function (e) {
                 e.stopPropagation();
+                if (e.preventDefault) e.preventDefault();
+
                 if (!isMaximized) {
                     originalSize = {
-                        width: win.style.width,
-                        height: win.style.height,
-                        top: win.style.top,
-                        left: win.style.left
+                        width: win.style.width || getComputedStyle(win).width,
+                        height: win.style.height || getComputedStyle(win).height,
+                        top: win.style.top || getComputedStyle(win).top,
+                        left: win.style.left || getComputedStyle(win).left
                     };
+
                     win.style.width = '95vw';
                     win.style.height = '85vh';
                     win.style.top = '2.5vh';
                     win.style.left = '2.5vw';
                     isMaximized = true;
                     win.classList.add('maximized');
-                    setTimeout(() => {
-                        win.style.zIndex = '25';
-                        addMobileWindowControls();
-                    }, 10);
+                    win.style.zIndex = '25';
                 } else {
                     win.style.width = originalSize.width;
                     win.style.height = originalSize.height;
@@ -659,19 +661,18 @@ document.addEventListener('DOMContentLoaded', function () {
                     isMaximized = false;
                     win.style.zIndex = '20';
                     win.classList.remove('maximized');
-                    setTimeout(addMobileWindowControls, 10);
                 }
+
+                setTimeout(addMobileWindowControls, 10);
+                return false;
             };
 
+            maximizeBtn._maximizeHandler = handleMaximize;
+
             maximizeBtn.addEventListener('click', handleMaximize);
-            maximizeBtn.addEventListener('touchstart', function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                handleMaximize(e);
-            }, { passive: false });
+            maximizeBtn.addEventListener('touchstart', handleMaximize, { passive: false });
         }
 
-        // Improved close button with proper touch handling
         if (closeBtn) {
             const handleClose = function (e) {
                 e.stopPropagation();
