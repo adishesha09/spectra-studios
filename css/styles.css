@@ -11,30 +11,273 @@
   --button-bg: #c0c0c0;
   --button-border: #808080;
   --scanline-color: rgba(0, 0, 0, 0.1);
-  
+
   /* Typography */
   --font-ui: "MS Sans Serif", "Microsoft Sans Serif", "Tahoma", "Geneva", sans-serif;
   --font-body: "Share Tech Mono", "Consolas", "Lucida Console", monospace;
   --font-title: "Pixel Operator", "VT323", "Share Tech Mono", monospace;
   --base-font-size: 0.9rem;
-  
+
   /* Borders & Effects */
   --border-raised: 2px solid var(--button-border);
   --border-inset: 2px inset var(--button-border);
   --border-top-left: 2px solid #fff;
   --box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
-  
+
   /* Spacing */
   --spacing-xs: 5px;
   --spacing-sm: 10px;
   --spacing-md: 15px;
   --spacing-lg: 20px;
-  
+
   /* Z-indices */
   --z-desktop: 1;
   --z-window: 10;
   --z-taskbar: 1000;
   --z-boot: 2000;
+}
+
+/* Theme variants */
+/* CRT Green Theme */
+body.theme-crt-green {
+  --bg-color: #001100;
+  --desktop-bg: #001100;
+  --window-bg: #001100;
+  --window-border: #00ff00;
+  --text-color: #00ff00;
+  --highlight: #00ff00;
+  --button-bg: #001100;
+  --button-border: #00ff00;
+  --scanline-color: rgba(0, 255, 0, 0.08);
+}
+
+/* Update text colors for CRT Green theme for better contrast */
+body.theme-crt-green .window-content,
+body.theme-crt-green .about-text p,
+body.theme-crt-green .about-section p,
+body.theme-crt-green .about-section li,
+body.theme-crt-green .window-content p,
+body.theme-crt-green .window-content h3,
+body.theme-crt-green .window-content h4,
+body.theme-crt-green .window-content h5,
+body.theme-crt-green .window-content h6,
+body.theme-crt-green .caption,
+body.theme-crt-green .portrait-caption,
+body.theme-crt-green small {
+  color: #00ff00 !important;
+  /* Force green text for all content */
+}
+
+body.theme-crt-green h1,
+body.theme-crt-green h2,
+body.theme-crt-green .window-title,
+body.theme-crt-green .start-menu-header {
+  color: #00ff00 !important;
+  /* Green headers */
+}
+
+body.theme-crt-green .window-header,
+body.theme-crt-green .start-menu-header {
+  background-color: #001100 !important;
+  /* Dark green background */
+  color: #00ff00 !important;
+  /* Green text */
+  border-bottom: 2px solid #00ff00;
+}
+
+body.theme-crt-green .window-content {
+  background-color: #001100;
+  color: #00ff00;
+}
+
+body.theme-crt-green .about-section li {
+  background-color: #002200;
+  border: 1px solid #00ff00;
+  border-top: 1px solid #008800;
+  border-left: 1px solid #008800;
+  color: #00ff00;
+}
+
+body.theme-crt-green .about-section li:hover {
+  background-color: #00ff00;
+  color: #001100;
+}
+
+body.theme-crt-green button,
+body.theme-crt-green .taskbar-item,
+body.theme-crt-green .start-menu-item {
+  background-color: #001100;
+  color: #00ff00;
+  border: 2px outset #00ff00;
+}
+
+body.theme-crt-green button:active,
+body.theme-crt-green .taskbar-item:active {
+  border: 2px inset #00ff00;
+}
+
+body.theme-crt-green .start-menu-item:hover {
+  background-color: #00ff00;
+  color: #001100;
+}
+
+body.theme-crt-green #taskbar {
+  background-color: #001100;
+  border-top: 2px solid #00ff00;
+  color: #00ff00;
+}
+
+body.theme-crt-green .folder-label {
+  background-color: #001100;
+  color: #00ff00;
+  border: 1px solid #00ff00;
+  border-top: 1px solid #008800;
+  border-left: 1px solid #008800;
+}
+
+body.theme-crt-green .folder-icon {
+  background-color: #002200;
+  border: 2px solid #00ff00;
+  border-top: 2px solid #008800;
+  border-left: 2px solid #008800;
+}
+
+body.theme-crt-green .folder-icon:after {
+  background-color: #002200;
+  border: 2px solid #00ff00;
+  border-bottom: 2px solid #008800;
+  border-right: 2px solid #008800;
+}
+
+body.theme-crt-green input,
+body.theme-crt-green textarea {
+  background-color: #001100;
+  color: #00ff00;
+  border: 2px inset #00ff00;
+}
+
+body.theme-crt-green input::placeholder,
+body.theme-crt-green textarea::placeholder {
+  color: #008800;
+}
+
+body.theme-crt-green .social-link {
+  color: #00ff00;
+}
+
+body.theme-crt-green .social-link:hover {
+  color: #001100;
+  background-color: #00ff00;
+}
+
+body.theme-crt-green .theme-option.active {
+  background-color: #00ff00;
+  color: #001100;
+}
+
+/* Vaporwave Pink Theme */
+body.theme-vaporwave-pink {
+  --bg-color: #ff71ce;
+  --desktop-bg: linear-gradient(135deg, #ff71ce, #01cdfe, #05ffa1, #b967ff);
+  --window-bg: #ff71ce;
+  --window-border: #01cdfe;
+  --text-color: #000;
+  --highlight: #01cdfe;
+  --button-bg: #ff71ce;
+  --button-border: #01cdfe;
+  --scanline-color: rgba(255, 255, 255, 0.09);
+}
+
+/* Midnight Blue Theme (Default) */
+body.theme-midnight-blue {
+  --bg-color: #c0c0c0;
+  --desktop-bg: linear-gradient(135deg, #000080, #000000);
+  --window-bg: #c0c0c0;
+  --window-border: #000080;
+  --text-color: #000;
+  --highlight: #000080;
+  --button-bg: #c0c0c0;
+  --button-border: #808080;
+  --scanline-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Add theme-specific CRT scanlines */
+body.theme-crt-green .crt-scanlines,
+body.theme-vaporwave-pink .crt-scanlines,
+body.theme-midnight-blue .crt-scanlines {
+  background: repeating-linear-gradient(0deg,
+      transparent,
+      transparent 2px,
+      var(--scanline-color) 2px,
+      var(--scanline-color) 4px);
+}
+
+/* Vaporwave Pink Theme adjustments for better contrast */
+body.theme-vaporwave-pink .window-content,
+body.theme-vaporwave-pink .about-text p,
+body.theme-vaporwave-pink .about-section p,
+body.theme-vaporwave-pink .about-section li,
+body.theme-vaporwave-pink .window-content p {
+  color: #000 !important;
+  /* Black text for better readability on pink */
+}
+
+body.theme-vaporwave-pink .about-section li {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+body.theme-vaporwave-pink input,
+body.theme-vaporwave-pink textarea {
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #000;
+}
+
+/* Theme selection window specific styles */
+.theme-option {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  margin: 10px 0;
+  border: 2px outset var(--button-border);
+  background-color: var(--button-bg);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.theme-option:hover {
+  border: 2px inset var(--button-border);
+  background-color: var(--highlight);
+  color: #fff;
+}
+
+.theme-option.active {
+  border: 2px inset var(--button-border);
+  background-color: var(--highlight);
+  color: #fff;
+}
+
+.theme-preview {
+  width: 40px;
+  height: 30px;
+  margin-right: 15px;
+  border: 2px solid var(--button-border);
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
+}
+
+.theme-crt-green .theme-preview.crt-green {
+  background: #001100;
+  border: 2px solid #00ff00;
+}
+
+.theme-vaporwave-pink .theme-preview.vaporwave-pink {
+  background: linear-gradient(135deg, #ff71ce, #01cdfe);
+  border: 2px solid #01cdfe;
+}
+
+.theme-midnight-blue .theme-preview.midnight-blue {
+  background: linear-gradient(135deg, #000080, #000000);
+  border: 2px solid #000080;
 }
 
 * {

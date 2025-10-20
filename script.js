@@ -1,6 +1,26 @@
 window.pikachuInitialized = false;
 window.pikachuAnimationId = null;
 
+let currentTheme = 'midnight-blue';
+
+function changeTheme(themeName) {
+    document.body.classList.remove('theme-crt-green', 'theme-vaporwave-pink', 'theme-midnight-blue');
+    document.body.classList.add(`theme-${themeName}`);
+    currentTheme = themeName;
+    localStorage.setItem('spectraos-theme', themeName);
+    console.log(`Theme changed to: ${themeName}`);
+}
+
+function updateActiveThemeOption(themeName) {
+    document.querySelectorAll('.theme-option').forEach(option => {
+        if (option.getAttribute('data-theme') === themeName) {
+            option.classList.add('active');
+        } else {
+            option.classList.remove('active');
+        }
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     const bootScreen = document.getElementById('boot-screen');
     const desktop = document.getElementById('desktop');
@@ -56,6 +76,10 @@ document.addEventListener('DOMContentLoaded', function () {
             const windowId = this.getAttribute('data-window');
             openWindow(windowId);
             startMenu.style.display = 'none';
+
+            if (windowId === 'themes-window') {
+                updateActiveThemeOption(currentTheme);
+            }
         });
     });
 
@@ -98,6 +122,30 @@ document.addEventListener('DOMContentLoaded', function () {
             this.classList.add('selected');
         });
     });
+
+    const themesFolderEl = document.getElementById('themes-folder');
+    if (themesFolderEl) {
+        themesFolderEl.addEventListener('click', function () {
+            openWindow('themes-window');
+        });
+    }
+
+    const savedTheme = localStorage.getItem('spectraos-theme');
+    if (savedTheme) {
+        changeTheme(savedTheme);
+    }
+
+    document.querySelectorAll('.theme-option').forEach(option => {
+        option.addEventListener('click', function () {
+            const theme = this.getAttribute('data-theme');
+            if (theme) {
+                changeTheme(theme);
+                updateActiveThemeOption(theme);
+            }
+        });
+    });
+
+    updateActiveThemeOption(currentTheme);
 
     document.getElementById('desktop').addEventListener('click', function (e) {
         if (e.target.id === 'desktop' || e.target.classList.contains('crt-scanlines')) {
