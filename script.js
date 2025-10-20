@@ -145,6 +145,16 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
+    setTimeout(() => {
+        document.querySelectorAll('.theme-option').forEach(option => {
+            option.addEventListener('click', function () {
+                const theme = this.getAttribute('data-theme');
+                changeTheme(theme);
+                updateActiveThemeOption(theme);
+            });
+        });
+    }, 100);
+
     updateActiveThemeOption(currentTheme);
 
     document.getElementById('desktop').addEventListener('click', function (e) {
@@ -283,7 +293,35 @@ function openWindow(windowId) {
         w.style.zIndex = '10';
     });
     window.style.zIndex = '20';
+    if (windowId === 'themes-window') {
+        setTimeout(initThemeSelection, 50);
+    }
+
     setTimeout(addMobileWindowControls, 10);
+}
+
+function initThemeSelection() {
+    document.querySelectorAll('.theme-option').forEach(option => {
+        option.replaceWith(option.cloneNode(true));
+    });
+
+    document.querySelectorAll('.theme-option').forEach(option => {
+        option.addEventListener('click', function (e) {
+            e.preventDefault();
+            const theme = this.getAttribute('data-theme');
+            changeTheme(theme);
+            updateActiveThemeOption(theme);
+        });
+
+        option.addEventListener('touchstart', function (e) {
+            e.preventDefault();
+            const theme = this.getAttribute('data-theme');
+            changeTheme(theme);
+            updateActiveThemeOption(theme);
+        }, { passive: false });
+    });
+
+    updateActiveThemeOption(currentTheme);
 }
 
 function addMobileWindowControls() {

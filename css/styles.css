@@ -990,6 +990,29 @@ button:active {
     touch-action: manipulation;
     padding-bottom: 40px;
   }
+
+  /* Update the folder positioning for mobile: create a 2x2 grid */
+  #about-folder {
+    top: 50px !important;
+    left: 50px !important;
+  }
+
+  #projects-folder {
+    top: 50px !important;
+    left: 150px !important;
+  }
+
+  #contact-folder {
+    top: 130px !important;
+    /* Second row */
+    left: 50px !important;
+  }
+
+  #themes-folder {
+    top: 130px !important;
+    /* Second row, next to contact */
+    left: 150px !important;
+  }
 }
 
 .window-header {
@@ -1013,5 +1036,36 @@ button:active {
   .portrait {
     width: 120px;
     height: 180px;
+  }
+
+  /* Further adjust folder positions for very small screens */
+  #about-folder {
+    top: 30px !important;
+    left: 30px !important;
+  }
+
+  #projects-folder {
+    top: 30px !important;
+    left: 120px !important;
+  }
+
+  #contact-folder {
+    top: 110px !important;
+    left: 30px !important;
+  }
+
+  #themes-folder {
+    top: 110px !important;
+    left: 120px !important;
+  }
+
+  .folder {
+    width: 80px !important;
+    /* Slightly smaller on very small screens */
+  }
+
+  .folder-icon {
+    width: 50px !important;
+    height: 40px !important;
   }
 }
