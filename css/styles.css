@@ -1057,6 +1057,7 @@ button:active {
   #themes-folder {
     top: 110px !important;
     left: 120px !important;
+    touch-action: manipulation;
   }
 
   .folder {

@@ -32,6 +32,13 @@ function updateActiveThemeOption(themeName) {
     });
 }
 
+function handleThemesFolderClick(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    openWindow('themes-window');
+    setTimeout(initThemeSelection, 100);
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     const bootScreen = document.getElementById('boot-screen');
     const desktop = document.getElementById('desktop');
@@ -136,9 +143,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const themesFolderEl = document.getElementById('themes-folder');
     if (themesFolderEl) {
-        themesFolderEl.addEventListener('click', function () {
-            openWindow('themes-window');
-        });
+        // Add both click and touchstart events for better mobile support
+        themesFolderEl.addEventListener('click', handleThemesFolderClick);
+        themesFolderEl.addEventListener('touchstart', handleThemesFolderClick, { passive: false });
     }
 
     const savedTheme = localStorage.getItem('spectraos-theme');
@@ -340,18 +347,22 @@ function openWindow(windowId) {
 
     setTimeout(addMobileWindowControls, 10);
 }
+
 function initThemeSelection() {
     console.log('Initializing theme selection...');
 
     const themeOptions = document.querySelectorAll('.theme-option');
     console.log(`Found ${themeOptions.length} theme options`);
 
+    // Remove existing event listeners by cloning and replacing
     themeOptions.forEach(option => {
         const newOption = option.cloneNode(true);
         option.parentNode.replaceChild(newOption, option);
     });
 
+    // Add fresh event listeners
     document.querySelectorAll('.theme-option').forEach(option => {
+        // Click event for desktop
         option.addEventListener('click', function (e) {
             e.preventDefault();
             e.stopPropagation();
@@ -361,6 +372,7 @@ function initThemeSelection() {
             updateActiveThemeOption(theme);
         });
 
+        // Touch event for mobile
         option.addEventListener('touchstart', function (e) {
             e.preventDefault();
             e.stopPropagation();
@@ -370,6 +382,7 @@ function initThemeSelection() {
             updateActiveThemeOption(theme);
         }, { passive: false });
 
+        // Visual feedback for touch
         option.addEventListener('touchstart', function () {
             this.style.backgroundColor = 'var(--highlight)';
             this.style.color = '#fff';
