@@ -384,23 +384,33 @@ document.addEventListener('DOMContentLoaded', function () {
     if (startBtn) {
         const handleStartClick = function (e) {
             e.stopPropagation();
-            e.stopImmediatePropagation();
+            e.preventDefault(); // Add this
             startMenu.style.display = startMenu.style.display === 'block' ? 'none' : 'block';
             return false;
         };
 
         startBtn.addEventListener('click', handleStartClick);
-        startBtn.addEventListener('touchstart', handleStartClick, { passive: false });
+        startBtn.addEventListener('touchstart', function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            startMenu.style.display = startMenu.style.display === 'block' ? 'none' : 'block';
+        }, { passive: false });
         startBtn.style.touchAction = 'manipulation';
     }
 
-    document.addEventListener('click', function () { if (startMenu) startMenu.style.display = 'none'; });
-    document.addEventListener('touchstart', function () { if (startMenu) startMenu.style.display = 'none'; }, { passive: false });
+    document.addEventListener('click', function (e) {
+        // Only hide start menu if click is NOT on start button or start menu
+        if (startMenu && !startMenu.contains(e.target) && e.target !== startBtn) {
+            startMenu.style.display = 'none';
+        }
+    });
 
-    if (startMenu) {
-        startMenu.addEventListener('click', function (e) { e.stopPropagation(); });
-        startMenu.addEventListener('touchstart', function (e) { e.stopPropagation(); }, { passive: false });
-    }
+    document.addEventListener('touchstart', function (e) {
+        // Only hide start menu if touch is NOT on start button or start menu
+        if (startMenu && !startMenu.contains(e.target) && e.target !== startBtn) {
+            startMenu.style.display = 'none';
+        }
+    }, { passive: false });
 
     document.querySelectorAll('.start-menu-item[data-window]').forEach(item => {
         const handleMenuItemClick = function (e) {
@@ -417,13 +427,19 @@ document.addEventListener('DOMContentLoaded', function () {
             return false;
         };
 
-        const newItem = item.cloneNode(true);
-        item.parentNode.replaceChild(newItem, item);
-
-        const updatedItem = newItem;
-        updatedItem.addEventListener('click', handleMenuItemClick);
-        updatedItem.addEventListener('touchstart', handleMenuItemClick, { passive: false });
-        updatedItem.style.touchAction = 'manipulation';
+        item.addEventListener('click', handleMenuItemClick);
+        item.addEventListener('touchstart', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const windowId = this.getAttribute('data-window');
+            openWindow(windowId);
+            if (startMenu) startMenu.style.display = 'none';
+            if (windowId === 'themes-window') {
+                updateActiveThemeOption(currentTheme);
+                setTimeout(initThemeSelection, 100);
+            }
+        }, { passive: false });
+        item.style.touchAction = 'manipulation';
     });
 
     const shutdownBtn = document.getElementById('shutdown-btn');
@@ -596,25 +612,45 @@ document.addEventListener('DOMContentLoaded', function () {
         if (header) makeDraggable(win, header);
         makeResizable(win);
 
+        // Improved minimize button with proper touch handling
         if (minimizeBtn) {
-            minimizeBtn.addEventListener('click', () => { win.style.display = 'none'; });
-            minimizeBtn.addEventListener('touchstart', () => { win.style.display = 'none'; }, { passive: false });
+            const handleMinimize = function (e) {
+                e.stopPropagation();
+                win.style.display = 'none';
+            };
+
+            minimizeBtn.addEventListener('click', handleMinimize);
+            minimizeBtn.addEventListener('touchstart', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                win.style.display = 'none';
+            }, { passive: false });
         }
 
-        let isMaximized = false;
-        let originalSize = {};
-
+        // Improved maximize button with proper touch handling
         if (maximizeBtn) {
-            const handleMaximize = function () {
+            let isMaximized = false;
+            let originalSize = {};
+
+            const handleMaximize = function (e) {
+                e.stopPropagation();
                 if (!isMaximized) {
-                    originalSize = { width: win.style.width, height: win.style.height, top: win.style.top, left: win.style.left };
+                    originalSize = {
+                        width: win.style.width,
+                        height: win.style.height,
+                        top: win.style.top,
+                        left: win.style.left
+                    };
                     win.style.width = '95vw';
                     win.style.height = '85vh';
                     win.style.top = '2.5vh';
                     win.style.left = '2.5vw';
                     isMaximized = true;
                     win.classList.add('maximized');
-                    setTimeout(() => { win.style.zIndex = '25'; addMobileWindowControls(); }, 10);
+                    setTimeout(() => {
+                        win.style.zIndex = '25';
+                        addMobileWindowControls();
+                    }, 10);
                 } else {
                     win.style.width = originalSize.width;
                     win.style.height = originalSize.height;
@@ -628,12 +664,26 @@ document.addEventListener('DOMContentLoaded', function () {
             };
 
             maximizeBtn.addEventListener('click', handleMaximize);
-            maximizeBtn.addEventListener('touchstart', handleMaximize, { passive: false });
+            maximizeBtn.addEventListener('touchstart', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                handleMaximize(e);
+            }, { passive: false });
         }
 
+        // Improved close button with proper touch handling
         if (closeBtn) {
-            closeBtn.addEventListener('click', () => { win.style.display = 'none'; });
-            closeBtn.addEventListener('touchstart', () => { win.style.display = 'none'; }, { passive: false });
+            const handleClose = function (e) {
+                e.stopPropagation();
+                win.style.display = 'none';
+            };
+
+            closeBtn.addEventListener('click', handleClose);
+            closeBtn.addEventListener('touchstart', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                win.style.display = 'none';
+            }, { passive: false });
         }
     });
 
