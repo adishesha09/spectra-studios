@@ -1,4 +1,3 @@
-
 window.pikachuInitialized = false;
 window.pikachuAnimationId = null;
 
@@ -26,9 +25,24 @@ function openWindow(windowId) {
     console.log(`Opening window: ${windowId}`);
     const win = document.getElementById(windowId);
     if (!win) { console.error(`Window not found: ${windowId}`); return; }
+
     win.style.display = 'block';
-    document.querySelectorAll('.window').forEach(w => { w.style.zIndex = '10'; });
+    document.querySelectorAll('.window').forEach(w => {
+        w.style.zIndex = '10';
+    });
     win.style.zIndex = '20';
+
+    if (window.innerWidth <= 768) {
+        win.style.top = '50%';
+        win.style.left = '50%';
+        win.style.transform = 'translate(-50%, -50%)';
+
+        win.style.width = '90vw';
+        win.style.maxWidth = '400px';
+        win.style.height = 'auto';
+        win.style.maxHeight = '80vh';
+    }
+
     if (windowId === 'themes-window') {
         console.log('Themes window opened, initializing theme selection');
         setTimeout(initThemeSelection, 50);
@@ -47,16 +61,23 @@ function initThemeSelection() {
     });
 
     document.querySelectorAll('.theme-option').forEach(option => {
-        option.addEventListener('click', function (e) {
+        const handleThemeClick = function (e) {
             e.preventDefault();
             e.stopPropagation();
+            e.stopImmediatePropagation();
             console.log('Theme option clicked:', this.getAttribute('data-theme'));
             const theme = this.getAttribute('data-theme');
             if (theme) {
                 changeTheme(theme);
                 updateActiveThemeOption(theme);
             }
-        });
+            return false;
+        };
+
+        option.addEventListener('click', handleThemeClick);
+        option.addEventListener('touchstart', handleThemeClick, { passive: false });
+        option.style.touchAction = 'manipulation';
+        option.style.cursor = 'pointer';
     });
 
     updateActiveThemeOption(currentTheme);
@@ -66,6 +87,7 @@ function addMobileWindowControls() {
     document.querySelectorAll('.window-control').forEach(control => {
         control.removeEventListener('touchstart', handleTouchControl);
         control.addEventListener('touchstart', handleTouchControl, { passive: false });
+        control.style.touchAction = 'manipulation';
     });
 }
 
@@ -140,6 +162,7 @@ function makeResizable(element) {
     handles.forEach(handle => {
         handle.addEventListener('mousedown', initResize);
         handle.addEventListener('touchstart', initTouchResize, { passive: false });
+        handle.style.touchAction = 'none';
     });
 
     function initResize(e) {
@@ -245,6 +268,14 @@ function initPikachuFollower() {
         if (!isFollowing) isFollowing = true;
     }
 
+    function handleTouchMove(e) {
+        if (e.touches.length > 0) {
+            mouseX = e.touches[0].clientX;
+            mouseY = e.touches[0].clientY;
+            if (!isFollowing) isFollowing = true;
+        }
+    }
+
     function animatePikachu() {
         if (isFollowing && pikachu && pikachu.style.display !== 'none') {
             const dx = mouseX - pikachuX, dy = mouseY - pikachuY;
@@ -273,15 +304,23 @@ function initPikachuFollower() {
     }
 
     document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('touchmove', handleTouchMove, { passive: false });
     document.addEventListener('mouseleave', () => { if (pikachu) pikachu.style.display = 'none'; });
     document.addEventListener('mouseenter', () => { if (pikachu && isFollowing) { pikachu.style.display = 'block'; bringPikachuToFront(); } });
     document.addEventListener('click', bringPikachuToFront);
     document.addEventListener('mousedown', bringPikachuToFront);
+    document.addEventListener('touchstart', bringPikachuToFront, { passive: false });
 
     const taskbar = document.getElementById('taskbar');
     const startBtn = document.getElementById('start-btn');
-    if (taskbar) taskbar.addEventListener('click', bringPikachuToFront);
-    if (startBtn) startBtn.addEventListener('click', bringPikachuToFront);
+    if (taskbar) {
+        taskbar.addEventListener('click', bringPikachuToFront);
+        taskbar.addEventListener('touchstart', bringPikachuToFront, { passive: false });
+    }
+    if (startBtn) {
+        startBtn.addEventListener('click', bringPikachuToFront);
+        startBtn.addEventListener('touchstart', bringPikachuToFront, { passive: false });
+    }
 
     resetPikachu();
     window.pikachuAnimationId = requestAnimationFrame(animatePikachu);
@@ -310,6 +349,7 @@ function cleanupPikachu() {
     if (pikachu) pikachu.style.display = 'none';
 }
 
+
 document.addEventListener('DOMContentLoaded', function () {
     const bootScreen = document.getElementById('boot-screen');
     const desktop = document.getElementById('desktop');
@@ -335,63 +375,110 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         document.addEventListener('keydown', function (e) { if (e.key === 'Enter') proceedToDesktop(); });
-        if (bootScreen) bootScreen.addEventListener('click', proceedToDesktop);
+        if (bootScreen) {
+            bootScreen.addEventListener('click', proceedToDesktop);
+            bootScreen.addEventListener('touchstart', proceedToDesktop, { passive: false });
+        }
     }
 
     if (startBtn) {
-        startBtn.addEventListener('click', function (e) {
+        const handleStartClick = function (e) {
             e.stopPropagation();
+            e.stopImmediatePropagation();
             startMenu.style.display = startMenu.style.display === 'block' ? 'none' : 'block';
-        });
+            return false;
+        };
+
+        startBtn.addEventListener('click', handleStartClick);
+        startBtn.addEventListener('touchstart', handleStartClick, { passive: false });
+        startBtn.style.touchAction = 'manipulation';
     }
 
     document.addEventListener('click', function () { if (startMenu) startMenu.style.display = 'none'; });
-    if (startMenu) startMenu.addEventListener('click', function (e) { e.stopPropagation(); });
+    document.addEventListener('touchstart', function () { if (startMenu) startMenu.style.display = 'none'; }, { passive: false });
+
+    if (startMenu) {
+        startMenu.addEventListener('click', function (e) { e.stopPropagation(); });
+        startMenu.addEventListener('touchstart', function (e) { e.stopPropagation(); }, { passive: false });
+    }
 
     document.querySelectorAll('.start-menu-item[data-window]').forEach(item => {
-        item.addEventListener('click', function () {
+        const handleMenuItemClick = function (e) {
+            e.preventDefault();
+            e.stopPropagation();
             const windowId = this.getAttribute('data-window');
+            console.log('Start menu item clicked:', windowId);
             openWindow(windowId);
             if (startMenu) startMenu.style.display = 'none';
             if (windowId === 'themes-window') {
                 updateActiveThemeOption(currentTheme);
                 setTimeout(initThemeSelection, 100);
             }
-        });
+            return false;
+        };
+
+        const newItem = item.cloneNode(true);
+        item.parentNode.replaceChild(newItem, item);
+
+        const updatedItem = newItem;
+        updatedItem.addEventListener('click', handleMenuItemClick);
+        updatedItem.addEventListener('touchstart', handleMenuItemClick, { passive: false });
+        updatedItem.style.touchAction = 'manipulation';
     });
 
     const shutdownBtn = document.getElementById('shutdown-btn');
-    if (shutdownBtn) shutdownBtn.addEventListener('click', function () {
-        if (confirm('Are you sure you want to shutdown SpectraOS?')) {
-            cleanupPikachu();
-            if (bootScreen) bootScreen.style.display = 'flex';
-            if (desktop) desktop.style.display = 'none';
-            if (startMenu) startMenu.style.display = 'none';
-            const bt = document.getElementById('boot-text');
-            if (bt) bt.textContent = 'Shutting down...';
-            const ep = document.getElementById('enter-prompt');
-            if (ep) ep.style.display = 'none';
-            setTimeout(() => {
-                if (bt) bt.textContent = 'SpectraOS has been shut down.';
-                setTimeout(() => { if (bootScreen) bootScreen.style.display = 'none'; }, 2000);
-            }, 1500);
-        }
-    });
+    if (shutdownBtn) {
+        const handleShutdown = function () {
+            if (confirm('Are you sure you want to shutdown SpectraOS?')) {
+                cleanupPikachu();
+                if (bootScreen) bootScreen.style.display = 'flex';
+                if (desktop) desktop.style.display = 'none';
+                if (startMenu) startMenu.style.display = 'none';
+                const bt = document.getElementById('boot-text');
+                if (bt) bt.textContent = 'Shutting down...';
+                const ep = document.getElementById('enter-prompt');
+                if (ep) ep.style.display = 'none';
+                setTimeout(() => {
+                    if (bt) bt.textContent = 'SpectraOS has been shut down.';
+                    setTimeout(() => { if (bootScreen) bootScreen.style.display = 'none'; }, 2000);
+                }, 1500);
+            }
+        };
+
+        shutdownBtn.addEventListener('click', handleShutdown);
+        shutdownBtn.addEventListener('touchstart', handleShutdown, { passive: false });
+    }
 
     const returnBtn = document.getElementById('return-to-desktop');
     const thankYouClose = document.getElementById('thank-you-close');
-    if (returnBtn) returnBtn.addEventListener('click', function () {
-        if (thankYouPage) thankYouPage.style.display = 'none';
-        if (desktop) desktop.style.display = 'block';
-        cleanupPikachu();
-        setTimeout(initPikachuFollower, 200);
-    });
-    if (thankYouClose) thankYouClose.addEventListener('click', function () {
-        if (thankYouPage) thankYouPage.style.display = 'none';
-        if (desktop) desktop.style.display = 'block';
-        cleanupPikachu();
-        setTimeout(initPikachuFollower, 200);
-    });
+    if (returnBtn) {
+        returnBtn.addEventListener('click', function () {
+            if (thankYouPage) thankYouPage.style.display = 'none';
+            if (desktop) desktop.style.display = 'block';
+            cleanupPikachu();
+            setTimeout(initPikachuFollower, 200);
+        });
+        returnBtn.addEventListener('touchstart', function () {
+            if (thankYouPage) thankYouPage.style.display = 'none';
+            if (desktop) desktop.style.display = 'block';
+            cleanupPikachu();
+            setTimeout(initPikachuFollower, 200);
+        }, { passive: false });
+    }
+    if (thankYouClose) {
+        thankYouClose.addEventListener('click', function () {
+            if (thankYouPage) thankYouPage.style.display = 'none';
+            if (desktop) desktop.style.display = 'block';
+            cleanupPikachu();
+            setTimeout(initPikachuFollower, 200);
+        });
+        thankYouClose.addEventListener('touchstart', function () {
+            if (thankYouPage) thankYouPage.style.display = 'none';
+            if (desktop) desktop.style.display = 'block';
+            cleanupPikachu();
+            setTimeout(initPikachuFollower, 200);
+        }, { passive: false });
+    }
 
     const folders = document.querySelectorAll('.folder');
     folders.forEach(folder => {
@@ -399,24 +486,51 @@ document.addEventListener('DOMContentLoaded', function () {
             folders.forEach(f => f.classList.remove('selected'));
             this.classList.add('selected');
         });
+        folder.addEventListener('touchstart', function (e) {
+            folders.forEach(f => f.classList.remove('selected'));
+            this.classList.add('selected');
+        }, { passive: false });
     });
 
     const themesFolderEl = document.getElementById('themes-folder');
     if (themesFolderEl) {
-        themesFolderEl.addEventListener('click', function (e) {
+        const newThemesFolder = themesFolderEl.cloneNode(true);
+        themesFolderEl.parentNode.replaceChild(newThemesFolder, themesFolderEl);
+
+        const updatedThemesFolder = document.getElementById('themes-folder');
+
+        const handleThemesClick = function (e) {
             e.preventDefault();
             e.stopPropagation();
+            e.stopImmediatePropagation();
+            console.log('Themes folder clicked/touched');
             openWindow('themes-window');
             setTimeout(initThemeSelection, 100);
-        });
+            return false;
+        };
+
+        updatedThemesFolder.addEventListener('click', handleThemesClick);
+        updatedThemesFolder.addEventListener('touchstart', handleThemesClick, { passive: false });
+
+        updatedThemesFolder.style.touchAction = 'manipulation';
+        updatedThemesFolder.style.cursor = 'pointer';
     }
 
     const aboutFolder = document.getElementById('about-folder');
-    if (aboutFolder) aboutFolder.addEventListener('click', () => openWindow('about-window'));
+    if (aboutFolder) {
+        aboutFolder.addEventListener('click', () => openWindow('about-window'));
+        aboutFolder.addEventListener('touchstart', () => openWindow('about-window'), { passive: false });
+    }
     const projectsFolder = document.getElementById('projects-folder');
-    if (projectsFolder) projectsFolder.addEventListener('click', () => openWindow('projects-window'));
+    if (projectsFolder) {
+        projectsFolder.addEventListener('click', () => openWindow('projects-window'));
+        projectsFolder.addEventListener('touchstart', () => openWindow('projects-window'), { passive: false });
+    }
     const contactFolder = document.getElementById('contact-folder');
-    if (contactFolder) contactFolder.addEventListener('click', () => openWindow('contact-window'));
+    if (contactFolder) {
+        contactFolder.addEventListener('click', () => openWindow('contact-window'));
+        contactFolder.addEventListener('touchstart', () => openWindow('contact-window'), { passive: false });
+    }
 
     const savedTheme = localStorage.getItem('spectraos-theme');
     if (savedTheme) changeTheme(savedTheme);
@@ -424,10 +538,13 @@ document.addEventListener('DOMContentLoaded', function () {
     if (typeof initThemeSelection === 'function') initThemeSelection();
 
     document.querySelectorAll('.theme-option').forEach(option => {
-        option.addEventListener('click', function () {
+        const handleThemeClick = function () {
             const theme = this.getAttribute('data-theme');
             if (theme) { changeTheme(theme); updateActiveThemeOption(theme); }
-        });
+        };
+
+        option.addEventListener('click', handleThemeClick);
+        option.addEventListener('touchstart', handleThemeClick, { passive: false });
     });
 
     const desktopEl = document.getElementById('desktop');
@@ -437,6 +554,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 folders.forEach(folder => folder.classList.remove('selected'));
             }
         });
+        desktopEl.addEventListener('touchstart', function (e) {
+            if (e.target.id === 'desktop' || e.target.classList.contains('crt-scanlines')) {
+                folders.forEach(folder => folder.classList.remove('selected'));
+            }
+        }, { passive: false });
     }
 
     const contactForm = document.getElementById('contact-form');
@@ -474,40 +596,55 @@ document.addEventListener('DOMContentLoaded', function () {
         if (header) makeDraggable(win, header);
         makeResizable(win);
 
-        if (minimizeBtn) minimizeBtn.addEventListener('click', () => { win.style.display = 'none'; });
+        if (minimizeBtn) {
+            minimizeBtn.addEventListener('click', () => { win.style.display = 'none'; });
+            minimizeBtn.addEventListener('touchstart', () => { win.style.display = 'none'; }, { passive: false });
+        }
 
         let isMaximized = false;
         let originalSize = {};
 
-        if (maximizeBtn) maximizeBtn.addEventListener('click', function () {
-            if (!isMaximized) {
-                originalSize = { width: win.style.width, height: win.style.height, top: win.style.top, left: win.style.left };
-                win.style.width = '95vw';
-                win.style.height = '85vh';
-                win.style.top = '2.5vh';
-                win.style.left = '2.5vw';
-                isMaximized = true;
-                win.classList.add('maximized');
-                setTimeout(() => { win.style.zIndex = '25'; addMobileWindowControls(); }, 10);
-            } else {
-                win.style.width = originalSize.width;
-                win.style.height = originalSize.height;
-                win.style.top = originalSize.top;
-                win.style.left = originalSize.left;
-                isMaximized = false;
-                win.style.zIndex = '20';
-                win.classList.remove('maximized');
-                setTimeout(addMobileWindowControls, 10);
-            }
-        });
+        if (maximizeBtn) {
+            const handleMaximize = function () {
+                if (!isMaximized) {
+                    originalSize = { width: win.style.width, height: win.style.height, top: win.style.top, left: win.style.left };
+                    win.style.width = '95vw';
+                    win.style.height = '85vh';
+                    win.style.top = '2.5vh';
+                    win.style.left = '2.5vw';
+                    isMaximized = true;
+                    win.classList.add('maximized');
+                    setTimeout(() => { win.style.zIndex = '25'; addMobileWindowControls(); }, 10);
+                } else {
+                    win.style.width = originalSize.width;
+                    win.style.height = originalSize.height;
+                    win.style.top = originalSize.top;
+                    win.style.left = originalSize.left;
+                    isMaximized = false;
+                    win.style.zIndex = '20';
+                    win.classList.remove('maximized');
+                    setTimeout(addMobileWindowControls, 10);
+                }
+            };
 
-        if (closeBtn) closeBtn.addEventListener('click', () => { win.style.display = 'none'; });
+            maximizeBtn.addEventListener('click', handleMaximize);
+            maximizeBtn.addEventListener('touchstart', handleMaximize, { passive: false });
+        }
+
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => { win.style.display = 'none'; });
+            closeBtn.addEventListener('touchstart', () => { win.style.display = 'none'; }, { passive: false });
+        }
     });
 
     const downloadBtn = document.querySelector('.download-button');
-    if (downloadBtn) downloadBtn.addEventListener('click', () => { console.log('Resume download initiated'); });
+    if (downloadBtn) {
+        downloadBtn.addEventListener('click', () => { console.log('Resume download initiated'); });
+        downloadBtn.addEventListener('touchstart', () => { console.log('Resume download initiated'); }, { passive: false });
+    }
 
     setTimeout(addMobileWindowControls, 50);
+
 });
 
 function updateClock() {
