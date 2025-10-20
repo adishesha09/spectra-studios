@@ -143,15 +143,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const themesFolderEl = document.getElementById('themes-folder');
     if (themesFolderEl) {
-        // Add both click and touchstart events for better mobile support
-        themesFolderEl.addEventListener('click', handleThemesFolderClick);
-        themesFolderEl.addEventListener('touchstart', handleThemesFolderClick, { passive: false });
-        themesFolderEl.addEventListener('touchend', function (e) {
+        themesFolderEl.addEventListener('click', function (e) {
             e.preventDefault();
             e.stopPropagation();
             openWindow('themes-window');
             setTimeout(initThemeSelection, 100);
-        }, { passive: false });
+        });
     }
 
     const savedTheme = localStorage.getItem('spectraos-theme');
@@ -164,24 +161,14 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     document.querySelectorAll('.start-menu-item[data-window="themes-window"]').forEach(item => {
-        item.addEventListener('click', function () {
-            setTimeout(initThemeSelection, 100);
-        });
-        item.addEventListener('touchend', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
+        item.addEventListener('click', function (e) {
+            e.preventDefault && e.preventDefault();
+            e.stopPropagation && e.stopPropagation();
             openWindow('themes-window');
             setTimeout(initThemeSelection, 100);
-        }, { passive: false });
+        });
     });
 
-    if (themesFolderEl) {
-        themesFolderEl.addEventListener('click', function (e) {
-            e.stopPropagation();
-            openWindow('themes-window');
-            setTimeout(initThemeSelection, 100);
-        });
-    }
 
     document.querySelectorAll('.theme-option').forEach(option => {
         option.addEventListener('click', function () {
@@ -366,15 +353,12 @@ function initThemeSelection() {
     const themeOptions = document.querySelectorAll('.theme-option');
     console.log(`Found ${themeOptions.length} theme options`);
 
-    // Remove existing event listeners by cloning and replacing
     themeOptions.forEach(option => {
         const newOption = option.cloneNode(true);
         option.parentNode.replaceChild(newOption, option);
     });
 
-    // Add fresh event listeners
     document.querySelectorAll('.theme-option').forEach(option => {
-        // Click event for desktop
         option.addEventListener('click', function (e) {
             e.preventDefault();
             e.stopPropagation();
@@ -384,11 +368,9 @@ function initThemeSelection() {
             updateActiveThemeOption(theme);
         });
 
-        // Touch event for mobile
         option.addEventListener('touchstart', function (e) {
             e.preventDefault();
             e.stopPropagation();
-            // Visual feedback for touch
             this.style.backgroundColor = 'var(--highlight)';
             this.style.color = '#fff';
         }, { passive: false });
