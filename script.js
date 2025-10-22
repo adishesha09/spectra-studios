@@ -37,10 +37,18 @@ function openWindow(windowId) {
         win.style.left = '50%';
         win.style.transform = 'translate(-50%, -50%)';
 
-        win.style.width = '90vw';
-        win.style.maxWidth = '400px';
-        win.style.height = 'auto';
-        win.style.maxHeight = '80vh';
+        // Special handling for about window on mobile - make it smaller
+        if (windowId === 'about-window') {
+            win.style.width = '95vw';
+            win.style.maxWidth = '350px';
+            win.style.height = '70vh';
+            win.style.maxHeight = '500px';
+        } else {
+            win.style.width = '90vw';
+            win.style.maxWidth = '400px';
+            win.style.height = 'auto';
+            win.style.maxHeight = '80vh';
+        }
     }
 
     if (windowId === 'themes-window') {
@@ -115,14 +123,25 @@ function setupMaximizeButton(win, maximizeBtn) {
                 height: win.style.height || getComputedStyle(win).height,
                 top: win.style.top || getComputedStyle(win).top,
                 left: win.style.left || getComputedStyle(win).left,
-                position: win.style.position
+                position: win.style.position,
+                transform: win.style.transform
             };
 
-            win.style.width = '95vw';
-            win.style.height = '85vh';
-            win.style.top = '2.5vh';
-            win.style.left = '2.5vw';
+            // For mobile, maximize to fill most of the screen but leave some padding
+            if (window.innerWidth <= 768) {
+                win.style.width = '95vw';
+                win.style.height = '90vh';
+                win.style.top = '2.5vh';
+                win.style.left = '2.5vw';
+            } else {
+                win.style.width = '95vw';
+                win.style.height = '85vh';
+                win.style.top = '2.5vh';
+                win.style.left = '2.5vw';
+            }
+
             win.style.position = 'fixed';
+            win.style.transform = 'none';
             isMaximized = true;
             win.classList.add('maximized');
             win.style.zIndex = '25';
@@ -134,6 +153,7 @@ function setupMaximizeButton(win, maximizeBtn) {
             win.style.top = originalSize.top;
             win.style.left = originalSize.left;
             win.style.position = originalSize.position || 'absolute';
+            win.style.transform = originalSize.transform || '';
             isMaximized = false;
             win.style.zIndex = '20';
             win.classList.remove('maximized');
@@ -145,9 +165,11 @@ function setupMaximizeButton(win, maximizeBtn) {
         return false;
     };
 
+    // Remove any existing event listeners
     maximizeBtn.removeEventListener('click', handleMaximize);
     maximizeBtn.removeEventListener('touchstart', handleMaximize);
 
+    // Add new event listeners
     maximizeBtn.addEventListener('click', handleMaximize);
     maximizeBtn.addEventListener('touchstart', function (e) {
         e.preventDefault();
@@ -518,7 +540,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const shutdownBtn = document.getElementById('shutdown-btn');
     if (shutdownBtn) {
-        const handleShutdown = function () {
+        const handleShutdown = function (e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
             if (confirm('Are you sure you want to shutdown SpectraOS?')) {
                 cleanupPikachu();
                 if (bootScreen) bootScreen.style.display = 'flex';
@@ -533,10 +560,18 @@ document.addEventListener('DOMContentLoaded', function () {
                     setTimeout(() => { if (bootScreen) bootScreen.style.display = 'none'; }, 2000);
                 }, 1500);
             }
+            return false;
         };
 
         shutdownBtn.addEventListener('click', handleShutdown);
-        shutdownBtn.addEventListener('touchstart', handleShutdown, { passive: false });
+        shutdownBtn.addEventListener('touchstart', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            handleShutdown(e);
+        }, { passive: false });
+
+        shutdownBtn.style.touchAction = 'manipulation';
+        shutdownBtn.style.cursor = 'pointer';
     }
 
     const returnBtn = document.getElementById('return-to-desktop');
