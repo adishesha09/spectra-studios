@@ -1,150 +1,128 @@
-# SpectraOS v2.1 — The Interactive Desktop Experience
+# SpectraOS
 
-"Where nostalgia meets innovation — a living, breathing retro desktop that remembers why we fell in love with computers in the first place."
+## Overview
+SpectraOS is an interactive retro desktop environment that functions as a game development portfolio, built with **HTML5**, **CSS3**, and **vanilla JavaScript**.
 
-## Welcome to SpectraOS
+## Core Features
 
-Step into a digital time machine! Spectra Studios has transformed from a conventional portfolio into SpectraOS — a fully interactive retro desktop environment that blends the charm of 90s computing with modern web magic. This isn't just a website, it's an experience that transports you back to the golden era of computing while showcasing cutting-edge game development.
+### Desktop Environment
+- **Boot Sequence:** Animated loading screen with terminal-style typing animation  
+- **Window Management:** Fully draggable, resizable windows with minimize/maximize/close controls  
+- **Taskbar:** System tray with Start button and live clock display  
+- **Desktop Icons:** Interactive folder icons for application launching  
 
-## What Makes SpectraOS Special
+### Theme System
+Three Visual Themes:
+- **Midnight Blue:** Classic Windows 98 aesthetic  
+- **CRT Green:** Retro monochrome terminal experience  
+- **Vaporwave Pink:** Synthwave aesthetic with vibrant gradients  
 
-SpectraOS isn't just viewed, it's explored. Every click, drag, and interaction feels like you're using a genuine retro operating system, complete with boot sequences, draggable windows, and that satisfying CRT glow.
+**Persistent Storage:** Theme preferences saved in localStorage  
+**Real-time Switching:** Instant theme changes without page reload  
 
-## What's New in v2.1
+### Interactive Elements
+- **Pikachu Companion:** Animated sprite that follows cursor movement with physics-based behavior  
+- **CRT Effects:** Authentic scanlines overlay for retro monitor appearance  
+- **Form Handling:** Contact form with FormSubmit.co integration and success states  
 
-### Dynamic Theme System
+## Applications
+- **About Window:** Professional portfolio with biography, education, and mission statement  
+- **Projects Window:** Embedded game jam submissions and project showcases  
+- **Contact Window:** Functional contact form with resume download and social links  
+- **Themes Window:** Visual theme selector with previews and descriptions  
 
-Personalize your desktop experience with three distinct visual themes:
+## Technical Implementation
 
-- **Midnight Blue** (Default): Classic Windows 98 aesthetic with deep blues and authentic gray tones
-- **CRT Green**: Retro monochrome terminal experience with authentic green-on-black display and scanlines
-- **Vaporwave Pink**: Synthwave aesthetic with vibrant pink/cyan gradients and futuristic vibes
+### Frontend Architecture
+- **Pure JavaScript:** Custom window management system without frameworks  
+- **CSS Custom Properties:** Dynamic theming through CSS variables  
+- **Responsive Design:** Mobile-optimized interface maintaining retro aesthetic  
+- **Z-index Layering:** Proper element hierarchy for desktop simulation  
 
-**Theme Features:**
-- Persistent theme selection saved in localStorage
-- Real-time theme switching without page reload
-- Complete interface overhaul including windows, buttons, and text
-- Authentic color palettes tailored to each aesthetic
+### Performance Features
+- **Animation Optimization:** requestAnimationFrame for smooth Pikachu movement  
+- **Touch Support:** Comprehensive mobile touch event handling  
+- **Asset Management:** Optimized images and fonts with fallbacks  
 
-### The Pikachu Companion Feature
+### Integration Features
+- **Analytics:** Google Analytics tracking  
+- **SEO Optimization:** Comprehensive meta tags, Open Graph, and structured data  
+- **Form Processing:** FormSubmit.co backend integration  
 
-Meet your digital pet: A lively Pikachu GIF now runs across your desktop, chasing your cursor with playful determination.
+## Browser Compatibility
+- Modern browsers with CSS Custom Properties support  
+- Mobile Safari and Chrome  
+- Touch and mouse input support  
+- Responsive breakpoints for tablet and mobile  
 
-- **Intelligent chasing mechanics:** Pikachu doesn't just follow — it anticipates, accelerates, and maintains a natural distance like a real companion.
-- **Window-top visibility:** Watch Pikachu scamper over your application windows, adding depth and personality to the desktop environment.
-- **Physics-based movement:** Realistic acceleration, momentum, and directional animations make Pikachu feel alive.
-- **Responsive behaviour:** Pikachu knows when to hide during shutdown and reappear when you're back.
+## File Structure
+```
+├── css/
+│   └── styles.css (Theme system and UI styles)
+├── imgs/ (Assets and icons)
+├── resources/ (Downloads and documents)
+├── CNAME
+├── README.md
+├── index.html (Main application)
+├── script.js (Desktop functionality)
+├── robots.txt
+├── sitemap.xml
+└── resources/ (Downloads and documents)
+```
 
-## Core Desktop Experience
-
-- Authentic boot sequence with typing animation and green terminal text.
-- Fully draggable, resizable windows with proper minimize/maximize/close controls.
-- CRT scanlines overlay for that genuine retro monitor feel.
-- Start menu with system options and application launcher.
-- Functional taskbar with live clock and system controls.
-- Desktop folders that open their respective applications.
-
-## Retro-Perfect Design
-
-- PC-98/Windows 98 inspired aesthetic with authentic color palettes.
-- 3D beveled borders and proper inset/outset button states.
-- MS Sans Serif typography system recreated using web-safe fonts.
-- Pixel-perfect icons and folder designs.
-- Responsive design that maintains the retro feel across all devices.
-
-## Design Philosophy
-
-> "We're not recreating the past — we're reinventing why we loved it."
-
-SpectraOS represents a fundamental shift in digital portfolio design. Instead of following modern minimalist trends, we embraced retro maximalism, the joyful complexity of early computing interfaces where every pixel had personality and every interaction felt tangible.
-
-This isn't just nostalgia, rather it's a statement about creativity, playfulness, and the emotional connection we form with technology. The careful recreation of CRT effects, the satisfying click of beveled buttons, our new Pikachu companion, and now the customizable theme system all serve to create an environment that feels both familiar and magical.
-
-## Technical Marvels
-
-**Powered By:**
-
-- Pure HTML5, CSS3, JavaScript — no heavy frameworks, just clean code.
-- Custom window management system with drag, resize, and focus controls.
-- Physics-based animation engine for the Pikachu companion.
-- CSS Custom Properties (variables) for dynamic theme switching.
-- Responsive z-index layering ensuring proper element hierarchy.
-- FormSubmit.co integration for seamless contact form handling.
-
-**Typography System:**
-
-- Share Tech Mono — primary terminal and UI font.
-- Pixel Operator — authentic pixel-perfect headings.
-- VT323 — alternative monospace for variety.
-
-## Live Desktop Applications
-
-### About Me Window
-
-- Interactive biography with portrait and timeline.
-- Education background and creative inspirations.
-- Mission statement and development philosophy.
-
-### Projects Window
-
-- Embedded game jam submissions.
-- Direct links to playable experiences.
-- Project descriptions and development insights.
-
-### Contact Window
-
-- Functional contact form with success animations.
-- Social media integration.
-- Resume download with proper styling.
-
-### Themes Window (NEW!)
-
-- Visual theme previews with sample colors
-- One-click theme switching
-- Theme descriptions and aesthetic information
-- Persistent theme memory across sessions
-
-## Theme Showcase
+## Theme Specifications
 
 ### Midnight Blue
-The classic experience - faithful recreation of the Windows 98 interface with navy blue accents, gray windows, and authentic button styling. Perfect for purists and nostalgia enthusiasts.
+- **Primary:** #000080 (Navy blue)  
+- **Background:** Linear gradient (dark blue to black)  
+- **Interface:** Classic gray windows with 3D borders  
 
 ### CRT Green
-Channel your inner hacker with this monochrome terminal theme. Features bright green text on dark backgrounds with authentic scanlines. All text and interface elements optimized for perfect contrast and readability.
+- **Primary:** #00ff00 (Bright green)  
+- **Background:** #001100 (Dark green)  
+- **Text:** Monochrome green with scanline overlay  
 
 ### Vaporwave Pink
-Embrace the aesthetic with this vibrant synthwave theme. Pink and cyan gradients create a futuristic yet retro atmosphere that's both eye-catching and functional.
+- **Primary:** #ff71ce (Hot pink)  
+- **Background:** Multi-color gradient  
+- **Accent:** #01cdfe (Cyan)  
 
-## Future Roadmap
+## Interactive Components
 
-**Coming in SpectraOS v3.0:**
+### Window Controls
+- Drag handles on window headers  
+- Eight-direction resize handles  
+- Minimize/maximize/close functionality  
+- Mobile-optimized touch controls  
 
-- Easter Egg Hunt: Hidden commands and secret interactions.
-- Terminal Mode: Command-line interface for power users.
-- Expanded Theme System: More themes including High Contrast and Dark Mode variants.
+### Pikachu Companion
+- 64x64 pixel animated GIF  
+- Physics-based chasing algorithm  
+- Acceleration and momentum simulation  
+- Z-index management for window layering  
 
-**Experimental Features:**
+### Form System
+- Client-side validation  
+- Success state with animated confirmation  
+- File download functionality  
+- Social media integration  
 
-- Pikachu Evolution: Different Pokémon companions to discover.
-- Dynamic Weather: Desktop background changes based on real weather.
-- Retro Sound Pack: Authentic system sounds and music.
-- Save States: Remember your window positions and preferences.
-- Custom Wallpapers: Upload your own desktop backgrounds.
+## Mobile Optimization
+- Touch-friendly controls (32px minimum target size)  
+- Responsive window positioning  
+- Mobile-specific layout adjustments  
+- Gesture support for window manipulation  
 
-## Experience SpectraOS Live
-
-Ready to step into the time machine? Visit [https://spectrastudios.co.za](https://spectrastudios.co.za) and experience the magic yourself.
-
-**Pro Tip:** Use fullscreen mode for maximum immersion, and don't be shy, click everything! The desktop is meant to be explored. Try switching themes to find your perfect aesthetic!
-
-**SpectraOS — Because the future of digital creativity is rooted in the past we loved.**
-
-**System Requirements:** Any modern browser, a sense of nostalgia, and willingness to click things just to see what happens.
-
-**Current Version:** v2.1 — "Theme Engine Update"  
-**Next Update:** v3.0 — "Terminal Expansion" (Coming Soon)
+## Future Development Roadmap
+- Terminal mode with command-line interface  
+- Expanded theme system with user customization  
+- Additional interactive companions  
+- Enhanced sound effects and audio feedback  
+- Advanced window management features  
 
 ---
 
-*SpectraOS v2.1 — Where every pixel has personality and every click tells a story.*
-[file content end]
+**Live Demo:** [https://spectrastudios.co.za](https://spectrastudios.co.za)  
+**Current Version:** v2.1  
+**Technology Stack:** HTML5, CSS3, Vanilla JavaScript  
+**Browser Support:** Chrome, Firefox, Safari, Edge (modern versions)
