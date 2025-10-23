@@ -66,8 +66,7 @@ Three Visual Themes:
 ├── index.html (Main application)
 ├── script.js (Desktop functionality)
 ├── robots.txt
-├── sitemap.xml
-└── resources/ (Downloads and documents)
+└── sitemap.xml
 ```
 
 ## Theme Specifications
